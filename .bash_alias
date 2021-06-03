@@ -1,0 +1,16 @@
+######################################
+# Python, Scala, R and Spark Notebook#
+# Requires docker installed and setup#
+# sudo pacman -S docker              #
+# sudo systemctl start docker        #
+# sudo systemctl enable docker       #
+######################################
+alias all-spark="sudo docker run -p 8888:8888 jupyter/all-spark-notebook" 
+
+#######################################################
+# Use a supported Canon DSLR as a webcam              #
+# Requires the following packages installed           #
+# pacman -S gphoto2 v4l-utils v4l2loopback-dkms ffmpeg#
+# Requires dslr-webcam.conf copied to /etc/modprobe.d/#
+#######################################################
+alias dslr-webcam="gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video0"
