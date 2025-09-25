@@ -1,0 +1,4 @@
+#!/bin/bash
+{{- range .packages.common.nix }}
+nix-env -iA {{ . }}
+{{- end }}
