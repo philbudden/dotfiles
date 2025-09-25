@@ -7,3 +7,4 @@ packages:
     - nixpkgs.ripgrep
     - nixpkgs.starship
     - nixpkgs.zoxide
+    - nixpkgs.harlequin
