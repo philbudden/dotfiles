@@ -1,0 +1,9 @@
+packages:
+  nix:
+    common:
+    - pkgs.bat
+    - pkgs.gh
+    - pkgs.neovim
+    - pkgs.ripgrep
+    - pkgs.starship
+    - pkgs.zoxide
