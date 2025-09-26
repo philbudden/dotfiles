@@ -1,3 +1,4 @@
+
 packages:
   common:
     nix:
@@ -7,6 +8,7 @@ packages:
     - nixpkgs.ripgrep
     - nixpkgs.starship
     - nixpkgs.zoxide
+
   host:
     nix:
     - nixpkgs.harlequin
@@ -14,10 +16,14 @@ packages:
     - nixpkgs.docker-compose
     - nixpkgs.lazydocker
     - nixpkgs.devpod
-    - nixpkgs.devpod-desktop
-    - nixpkgs.ghostty
     - nixpkgs.tmux
     - nixpkgs.dysk
+
   wsl2:
-      nix:
-      - nixpkgs.gcc
+    nix:
+    - nixpkgs.gcc
+
+  darwin:
+    nix:
+    - nixpkgs.devpod-desktop
+    - nixpkgs.ghostty

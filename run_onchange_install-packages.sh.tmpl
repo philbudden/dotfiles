@@ -8,6 +8,7 @@ nix-env -iA {{ . }}
 # Set environment variables
 isHost=false
 isWSL2=false
+isDarwin=false
 
 # WSL2 detection via /mnt/c
 if [ -d /mnt/c ]; then
@@ -15,10 +16,11 @@ if [ -d /mnt/c ]; then
   isWSL2=true
 fi
 
-# # macOS detection via uname
-# if [ "$(uname)" = "Darwin" ]; then
-#   isHost=true
-# fi
+# macOS detection via uname
+if [ "$(uname)" = "Darwin" ]; then
+  isHost=true
+  isDarwin=true
+fi
 
 # Install packages if in host environment
 if [ "$isHost" = true ]; then
@@ -30,6 +32,13 @@ fi
 # Install additional packages if in WSL2 environment
 if [ "$isWSL2" = true ]; then
   {{- range .packages.wsl2.nix }}
+  nix-env -iA {{ . }}
+  {{- end }}
+fi
+
+# Install additional packages if in MacOS environment
+if [ "$isDarwin" = true ]; then
+  {{- range .packages.darwin.nix }}
   nix-env -iA {{ . }}
   {{- end }}
 fi

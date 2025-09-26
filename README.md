@@ -40,6 +40,8 @@ Packages are defined in `.chezmoidata/packages.yaml`, split into:
 
 - `common.nix`: Stuff I want everywhere!
 - `host.nix`: Stuff I want everywhere that isn't a conatiner!
+- `wsl2.nix`: Stuff I want in WSL2!
+- `darwin.nix`: Stuff I want in macOS!
 
 Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi renders and runs when things change. It’s templated, declarative, and slightly cursed.
 
@@ -72,15 +74,15 @@ Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi re
 
 ## :jigsaw: Future Plans
 
-- Add support for macOS and native Linux setups.
+- Add support for Windows and native Linux setups.
 
 - Introduce Homebrew (again) for macOS where Nix isn’t ideal.
-
-- Maybe—just maybe—embrace Home Manager and Nix Darwin.
 
 - Expand package definitions to include GUI apps, fonts, and other creature comforts.
 
 - Refactor into a modular, layered architecture that reflects my engineering philosophy.
+
+- Maybe—just maybe—embrace Home Manager and Nix Darwin.
 
 ## :open_book: Notes
 
