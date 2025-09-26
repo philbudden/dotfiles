@@ -1,15 +1,11 @@
 #!/bin/bash
+isWSL2: "{{ match \".*microsoft-standard-WSL2.*\" .chezmoi.kernel.osrelease }}"
 {{- range .packages.common.nix }}
 nix-env -iA {{ . }}
 {{- end }}
-
-echo "OS Release: {{ .chezmoi.kernel.osrelease }}"
-
-{{- if (contains .chezmoi.kernel.osrelease "microsoft-standard-WSL2") }}
-echo "Detected WSL2 — installing host packages"
+{{- if .isWSL2 }}
 {{- range .packages.host.nix }}
 nix-env -iA {{ . }}
 {{- end }}
-{{- else }}
-echo "WSL2 not detected — skipping host packages"
-{{- end }}
+EOF
+{{ end -}}
