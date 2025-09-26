@@ -62,10 +62,10 @@ Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi re
    chezmoi init --apply $YOURGITHUBUSER
    ```
 
-3. **Let the magic happen**
+3. **Let the magic happen**</br>
 Chezmoi will apply configs, detect WSL2 (if applicable), and run the install script to pull in packages via Nix.
 
-4. **Profit**
+4. **Profit**</br>
 You now have bat, gh, neovim, ripgrep, starship, zoxide, and more. If you're on WSL2, you get extra goodies like Docker, Devpod, Ghostty, and tmux.
 
 ## :jigsaw: Future Plans
