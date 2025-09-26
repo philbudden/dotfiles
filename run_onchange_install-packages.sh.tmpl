@@ -6,5 +6,4 @@ nix-env -iA {{ . }}
 {{- range .packages.host.nix }}
 nix-env -iA {{ . }}
 {{- end }}
-EOF
 {{ end -}}
