@@ -1,0 +1,3 @@
+{
+  "isWSL2": "{{ contains .chezmoi.kernel.osrelease \"microsoft-standard-WSL2\" }}"
+}
