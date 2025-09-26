@@ -2,7 +2,7 @@
 {{- range .packages.common.nix }}
 nix-env -iA {{ . }}
 {{- end }}
-{{ if contains .chezmoi.kernel.osrelease "microsoft-standard-WSL2" }}
+{{- if contains .chezmoi.kernel.osrelease "microsoft-standard-WSL2" }}
 {{- range .packages.host.nix }}
 nix-env -iA {{ . }}
 {{- end }}
