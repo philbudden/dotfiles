@@ -2,4 +2,4 @@ export EDITOR='nvim'
 export BAT_THEME="gruvbox-dark"
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_DEFAULT_OPTS='--preview "bat --style=numbers --color=always {}"'
-
+eval "$(starship init bash)"

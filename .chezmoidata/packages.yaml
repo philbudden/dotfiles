@@ -1,5 +1,5 @@
-
 packages:
+
   common:
     nix:
     - nixpkgs.bat
@@ -11,13 +11,14 @@ packages:
 
   host:
     nix:
-    - nixpkgs.harlequin
+    - nixpkgs.devpod
     - nixpkgs.docker
     - nixpkgs.docker-compose
-    - nixpkgs.lazydocker
-    - nixpkgs.devpod
-    - nixpkgs.tmux
     - nixpkgs.dysk
+    - nixpkgs.harlequin
+    - nixpkgs.jetbrains-mono
+    - nixpkgs.lazydocker
+    - nixpkgs.tmux
 
   wsl2:
     nix:
