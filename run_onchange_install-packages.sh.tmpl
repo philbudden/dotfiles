@@ -4,10 +4,8 @@ nix-env -iA {{ . }}
 {{- end }}
 
 {{- if .isWSL2 }}
-echo "Detected WSL2 — installing host packages"
 {{- range .packages.host.nix }}
 nix-env -iA {{ . }}
 {{- end }}
-{{- else }}
-echo "WSL2 not detected — skipping host packages"
+
 {{- end }}
