@@ -8,3 +8,14 @@ packages:
     - nixpkgs.starship
     - nixpkgs.zoxide
     - nixpkgs.harlequin
+  host:
+    nix:
+    - nixpkgs.harlequin
+    - nixpkgs.docker
+    - nixpkgs.docker-compose
+    - nixpkgs.lazydocker
+    - nixpkgs.devpod
+    - nixpkgs.devpod-desktop
+    - nixpkgs.ghostty
+    - nixpkgs.tmux
+    - nixpkgs.dysk
