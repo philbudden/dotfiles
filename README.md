@@ -39,7 +39,7 @@ Yes, I know about Home Manager and Nix Darwin. No, I’m not ready. Let me live.
 Packages are defined in `.chezmoidata/packages.yaml`, split into:
 
 - `common.nix`: Stuff I want everywhere!
-- `host.nix`: Stuff I want everywhere that isn't a conatiner!
+- `host.nix`: Stuff I want everywhere that isn't a container!
 - `wsl2.nix`: Stuff I want in WSL2!
 - `darwin.nix`: Stuff I want in macOS!
 
