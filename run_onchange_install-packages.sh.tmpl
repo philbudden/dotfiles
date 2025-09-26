@@ -5,26 +5,31 @@
 nix-env -iA {{ . }}
 {{- end }}
 
-# Detect host environment (WSL2 or macOS in future)
+# Set environment variables
 isHost=false
+isWSL2=false
 
 # WSL2 detection via /mnt/c
 if [ -d /mnt/c ]; then
   isHost=true
+  isWSL2=true
 fi
 
-# macOS detection via uname
-if [ "$(uname)" = "Darwin" ]; then
-  isHost=true
-fi
+# # macOS detection via uname
+# if [ "$(uname)" = "Darwin" ]; then
+#   isHost=true
+# fi
 
-# Install host packages if in host environment
+# Install packages if in host environment
 if [ "$isHost" = true ]; then
-  echo "Detected host environment. Installing host packages…"
   {{- range .packages.host.nix }}
   nix-env -iA {{ . }}
   {{- end }}
-else
-  echo "Container or unsupported environment. Skipping host packages."
 fi
 
+# Install additional packages if in WSL2 environment
+if [ "$isWSL2" = true ]; then
+  {{- range .packages.wsl2.nix }}
+  nix-env -iA {{ . }}
+  {{- end }}
+fi

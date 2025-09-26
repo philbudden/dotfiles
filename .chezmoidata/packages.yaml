@@ -18,3 +18,6 @@ packages:
     - nixpkgs.ghostty
     - nixpkgs.tmux
     - nixpkgs.dysk
+  wsl2:
+      nix:
+      - nixpkgs.gcc
