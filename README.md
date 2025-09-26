@@ -38,8 +38,8 @@ Yes, I know about Home Manager and Nix Darwin. No, I’m not ready. Let me live.
 
 Packages are defined in `.chezmoidata/packages.yaml`, split into:
 
-- `common.nix`: Stuff I want everywhere.
-- `host.nix`: Stuff I want only on WSL2 (for now).
+- `common.nix`: Stuff I want everywhere!
+- `host.nix`: Stuff I want everywhere that isn't a conatiner!
 
 Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi renders and runs when things change. It’s templated, declarative, and slightly cursed.
 
@@ -54,7 +54,7 @@ Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi re
    ```shell
    sudo apt update && \
      sudo apt install curl xz-utils
-  ```
+   ```
 
 2. **Install Chezmoi**
    ```shell
@@ -62,11 +62,11 @@ Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi re
    chezmoi init --apply $YOURGITHUBUSER
    ```
 
-3. **Let the magic happen** 
-   Chezmoi will apply configs, detect WSL2 (if applicable), and run the install script to pull in packages via Nix.
+3. **Let the magic happen**
+Chezmoi will apply configs, detect WSL2 (if applicable), and run the install script to pull in packages via Nix.
 
 4. **Profit**
-   You now have bat, gh, neovim, ripgrep, starship, zoxide, and more. If you're on WSL2, you get extra goodies like Docker, Devpod, Ghostty, and tmux.
+You now have bat, gh, neovim, ripgrep, starship, zoxide, and more. If you're on WSL2, you get extra goodies like Docker, Devpod, Ghostty, and tmux.
 
 ## :jigsaw: Future Plans
 
