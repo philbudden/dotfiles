@@ -7,7 +7,6 @@ packages:
     - nixpkgs.ripgrep
     - nixpkgs.starship
     - nixpkgs.zoxide
-    - nixpkgs.harlequin
   host:
     nix:
     - nixpkgs.harlequin
