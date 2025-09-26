@@ -2,8 +2,14 @@
 {{- range .packages.common.nix }}
 nix-env -iA {{ . }}
 {{- end }}
-{{- if contains .chezmoi.kernel.osrelease "microsoft-standard-WSL2" }}
+
+echo "OS Release: {{ .chezmoi.kernel.osrelease }}"
+
+{{- if (contains .chezmoi.kernel.osrelease "microsoft-standard-WSL2") }}
+echo "Detected WSL2 — installing host packages"
 {{- range .packages.host.nix }}
 nix-env -iA {{ . }}
 {{- end }}
-{{ end -}}
+{{- else }}
+echo "WSL2 not detected — skipping host packages"
+{{- end }}
