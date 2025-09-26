@@ -1,11 +1,30 @@
 #!/bin/bash
+
+# Install common packages
 {{- range .packages.common.nix }}
 nix-env -iA {{ . }}
 {{- end }}
 
-{{- if .isWSL2 }}
-{{- range .packages.host.nix }}
-nix-env -iA {{ . }}
-{{- end }}
+# Detect host environment (WSL2 or macOS in future)
+isHost=false
 
-{{- end }}
+# WSL2 detection via /mnt/c
+if [ -d /mnt/c ]; then
+  isHost=true
+fi
+
+# macOS detection via uname
+if [ "$(uname)" = "Darwin" ]; then
+  isHost=true
+fi
+
+# Install host packages if in host environment
+if [ "$isHost" = true ]; then
+  echo "Detected host environment. Installing host packages…"
+  {{- range .packages.host.nix }}
+  nix-env -iA {{ . }}
+  {{- end }}
+else
+  echo "Container or unsupported environment. Skipping host packages."
+fi
+

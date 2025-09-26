@@ -86,8 +86,6 @@ Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi re
 
 - `.chezmoiignore` ignores README.md because I don’t want chezmoi touching this masterpiece.
 
-- `.chezmoidata` contains templated logic for detecting WSL2.
-
 - `private_git_config` is where I keep my Git secrets. No peeking.
 
 ## :brain: Why This Matters
@@ -111,7 +109,7 @@ This isn’t just dotfiles—it’s a living, breathing reflection of my workflo
 **Q:** Why not just use one package manager? 
 **A:** Because I live on the edge. Also because Nix is the only one that doesn’t cry when I switch from x86_64 to aarch64.
 
-**Q:** Why is your .chezmoidata file trying to detect WSL2? 
+**Q:** Why are you using /mnt/c to detect WSL2? 
 **A:** Because WSL2 is a beautiful lie and I need to treat it like the special snowflake it is.
 
 **Q:** Why not just use Docker for everything? 
