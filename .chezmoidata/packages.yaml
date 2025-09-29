@@ -36,6 +36,7 @@ packages:
     - proton-drive
     - proton-mail
     - protonvpn
+    - raycast
     - tailscale
     - utm
     - whatsapp
