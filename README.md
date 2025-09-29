@@ -17,6 +17,7 @@ MacOS:
 curl -L https://nixos.org/nix/install | sh
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 nix-env -iA nixpkgs.chezmoi
+xcode-select --install 2>/dev/null
 chezmoi init --apply $YOURGITHUBUSER
 ```
 
@@ -59,25 +60,40 @@ Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi re
 1. **Install Nix**  
    ```shell
    curl -L https://nixos.org/nix/install | sh
-   . ~/.nix-profile/etc/profile.d/nix.sh
    ```
-   (you may need some prereqs dependong on how bare-bones your system is)
+   (you may need some prereqs on Linux depending on how bare-bones your system is)
    ```shell
    sudo apt update && \
      sudo apt install curl xz-utils
    ```
+   You need to refresh your shell to make the `nix-env` command available:
+     - On Linux:
+     ```shell
+     . ~/.nix-profile/etc/profile.d/nix.sh
+     ```
+     - On MacOS:
+     ```shell
+     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+     ```
 
 2. **Install Chezmoi**
    ```shell
    nix-env -iA nixpkgs.chezmoi
-   chezmoi init --apply $YOURGITHUBUSER
    ```
 
 3. **Let the magic happen**
+   ```shell
+      chezmoi init --apply $YOURGITHUBUSER
+   ```
 
-   Chezmoi will apply configs, detect WSL2 (if applicable), and run the install script to pull in packages via Nix.
+   Note on MacOs you require xcode, install with:
+   ```shell
+   xcode-select --install 2>/dev/null
+   ```
 
-4. **Profit**
+   Chezmoi will apply configs, and install packages.
+
+5. **Profit**
 
    You now have bat, gh, neovim, ripgrep, starship, zoxide, and more. If you're on WSL2, you get extra goodies like Docker, Devpod, Ghostty, and tmux.
 
