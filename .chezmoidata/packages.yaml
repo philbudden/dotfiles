@@ -26,5 +26,7 @@ packages:
 
   darwin:
     nix:
-    - nixpkgs.devpod-desktop
-    - nixpkgs.ghostty
+    - darwin.xcode
+    cask:
+    - devpod
+    - ghostty
