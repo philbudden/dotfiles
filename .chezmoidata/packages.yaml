@@ -25,8 +25,18 @@ packages:
     - nixpkgs.gcc
 
   darwin:
-    nix:
-    - darwin.xcode
+    # macos gui apps
     cask:
+    - bitwarden
+    - copilot
     - devpod
+    - discord
     - ghostty
+    - obsidian
+    - proton-drive
+    - proton-mail
+    - protonvpn
+    - tailscale
+    - utm
+    - whatsapp
+    - windows-app
