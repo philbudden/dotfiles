@@ -39,6 +39,6 @@ fi
 # Install additional packages if in MacOS environment
 if [ "$isDarwin" = true ]; then
   {{- range .packages.darwin.cask }}
-  cask {{ . | quote }}
+  brew install --cask {{ . | quote }}
   {{- end }}
 fi
