@@ -9,16 +9,16 @@ Linux:
 curl -L https://nixos.org/nix/install | sh
 . ~/.nix-profile/etc/profile.d/nix.sh
 nix-env -iA nixpkgs.chezmoi
-chezmoi init --apply $YOURGITHUBUSER
+chezmoi init --apply n3ddu8
 ```
 
 MacOS:
 ```shell
+xcode-select --install
 curl -L https://nixos.org/nix/install | sh
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 nix-env -iA nixpkgs.chezmoi
-xcode-select --install 2>/dev/null
-chezmoi init --apply $YOURGITHUBUSER
+chezmoi init --apply n3ddu8
 ```
 
 ## :rocket: What This Is
@@ -57,16 +57,21 @@ Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi re
 
 ## :test_tube: Setup Instructions
 
-1. **Install Nix**  
-   ```shell
-   curl -L https://nixos.org/nix/install | sh
-   ```
-   (you may need some prereqs on Linux depending on how bare-bones your system is)
+1. **Install Pre-reqs**
+   - On Linux (Debian derivitives) ensure pre-reqs are installed:
    ```shell
    sudo apt update && \
      sudo apt install curl xz-utils
    ```
-   You need to refresh your shell to make the `nix-env` command available:
+   - On MacOS:
+   ```shell
+   xcode-select --install
+   ```
+2. **Install Nix**
+   ```shell
+   curl -L https://nixos.org/nix/install | sh
+   ```
+   You will need to refresh your shell to make the `nix-env` command available:
      - On Linux:
      ```shell
      . ~/.nix-profile/etc/profile.d/nix.sh
@@ -75,27 +80,14 @@ Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi re
      ```shell
      . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
      ```
-
-2. **Install Chezmoi**
+3. **Install Chezmoi**
    ```shell
    nix-env -iA nixpkgs.chezmoi
    ```
-
-3. **Let the magic happen**
+4. **Let the magic happen**
    ```shell
-      chezmoi init --apply $YOURGITHUBUSER
+   chezmoi init --apply $YOURGITHUBUSER
    ```
-
-   Note on MacOs you require xcode, install with:
-   ```shell
-   xcode-select --install 2>/dev/null
-   ```
-
-   Chezmoi will apply configs, and install packages.
-
-5. **Profit**
-
-   You now have bat, gh, neovim, ripgrep, starship, zoxide, and more. If you're on WSL2, you get extra goodies like Docker, Devpod, Ghostty, and tmux.
 
 ## :jigsaw: Future Plans
 
