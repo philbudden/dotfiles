@@ -4,9 +4,18 @@ Welcome to my dotfiles repo—a lovingly crafted mess of scripts, configs, and a
 
 ## :yawning_face: TLDR
 
+Linux:
 ```shell
 curl -L https://nixos.org/nix/install | sh
 . ~/.nix-profile/etc/profile.d/nix.sh
+nix-env -iA nixpkgs.chezmoi
+chezmoi init --apply $YOURGITHUBUSER
+```
+
+MacOS:
+```shell
+curl -L https://nixos.org/nix/install | sh
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 nix-env -iA nixpkgs.chezmoi
 chezmoi init --apply $YOURGITHUBUSER
 ```
