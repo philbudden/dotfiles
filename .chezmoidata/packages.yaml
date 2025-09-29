@@ -15,9 +15,9 @@ packages:
     - nixpkgs.docker
     - nixpkgs.docker-compose
     - nixpkgs.dysk
-    - nixpkgs.harlequin
     - nixpkgs.jetbrains-mono
     - nixpkgs.lazydocker
+    - nixpkgs.lazysql
     - nixpkgs.tmux
 
   wsl2:
