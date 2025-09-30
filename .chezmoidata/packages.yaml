@@ -7,6 +7,7 @@ packages:
     - nixpkgs.neovim
     - nixpkgs.ripgrep
     - nixpkgs.starship
+    - nixpkgs.unzip
     - nixpkgs.zoxide
 
   host:
