@@ -4,6 +4,7 @@ packages:
     nix:
     - nixpkgs.bat
     - nixpkgs.gh
+    - nixpkgs.jq
     - nixpkgs.neovim
     - nixpkgs.ripgrep
     - nixpkgs.starship
