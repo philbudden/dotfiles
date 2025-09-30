@@ -26,7 +26,7 @@ Windows:
 wsl --install -d Debian
 shutdown /r /t 0
 ```
-- Once rebootned launch Debian:
+- Once rebooted launch Debian:
 ```
 sudo apt update && sudo apt install curl xz-utils
 curl -L https://nixos.org/nix/install | sh
