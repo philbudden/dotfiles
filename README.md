@@ -28,7 +28,7 @@ shutdown /r /t 0
 ```
 - Once rebooted:
 ```shell
-wsl --install Debian
+wsl --install Ubuntu-24.04
 ```
 - Follow the onscreen prompts, once Debian launches:
 ```shell

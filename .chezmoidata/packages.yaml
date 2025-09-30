@@ -26,6 +26,13 @@ packages:
     nix:
     - nixpkgs.gcc
 
+    apteula:
+    - msodbcsql18
+    - mssql-tools18
+
+    apt:
+    - unixodbc-dev
+
   darwin:
     # macos gui apps
     cask:
