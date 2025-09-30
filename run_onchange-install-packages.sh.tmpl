@@ -55,6 +55,10 @@ if [ "$isWSL2" = true ]; then
   rm packages-microsoft-prod.deb
   sudo apt update
 
+  # Ad docker repo
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+
   {{- range .packages.wsl2.apteula }}
   sudo ACCEPT_EULA=Y apt install -y {{ . }}
   {{- end }}
@@ -63,11 +67,9 @@ if [ "$isWSL2" = true ]; then
   sudo apt install -y {{ . }}
   {{- end }}
 
-  {{- range .packages.wsl2.apt }}
-  sudo apt install -y {{ . }}
-  {{- end }}
-
   source ~/.bashrc
+  sudo usermod -aG docker ${USER}
+  su - ${USER}
 
 fi
 

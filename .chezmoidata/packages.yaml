@@ -14,8 +14,6 @@ packages:
   host:
     nix:
     - nixpkgs.devpod
-    - nixpkgs.docker
-    - nixpkgs.docker-compose
     - nixpkgs.dysk
     - nixpkgs.jetbrains-mono
     - nixpkgs.lazydocker
@@ -32,8 +30,18 @@ packages:
 
     apt:
     - unixodbc-dev
+    - apt-transport-https
+    - ca-certificates
+    - software-properties-common
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
 
   darwin:
+    nix:
+    - nixpkgs.docker
+    - nixpkgs.docker-compose
+
     # macos gui apps
     cask:
     - bitwarden
