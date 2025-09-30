@@ -21,14 +21,27 @@ nix-env -iA nixpkgs.chezmoi
 chezmoi init --apply n3ddu8
 ```
 
+Windows:
+```shell
+wsl --install -d Debian
+shutdown /r /t 0
+```
+- Once rebootned launch Debian:
+```
+sudo apt update && sudo apt install curl xz-utils
+curl -L https://nixos.org/nix/install | sh
+. ~/.nix-profile/etc/profile.d/nix.sh
+nix-env -iA nixpkgs.chezmoi
+chezmoi init --apply n3ddu8
+```
+
 ## :rocket: What This Is
 
 This repo uses [chezmoi](https://www.chezmoi.io/) to manage my personal and professional environments across:
 
-- :window: Windows
+- :window: Windows (WSL2)
 - :penguin: Linux (x86_64 + aarch64)
 - :apple: macOS
-- :shell: WSL2
 
 It’s a work in progress, but the goal is simple: one command, full setup, zero regrets.
 
