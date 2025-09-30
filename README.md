@@ -23,11 +23,15 @@ chezmoi init --apply n3ddu8
 
 Windows:
 ```shell
-wsl --install -d Debian
+wsl --install
 shutdown /r /t 0
 ```
-- Once rebooted launch Debian:
+- Once rebooted:
+```shell
+wsl --install Debian
 ```
+- Follow the onscreen prompts, once Debian launches:
+```shell
 sudo apt update && sudo apt install curl xz-utils
 curl -L https://nixos.org/nix/install | sh
 . ~/.nix-profile/etc/profile.d/nix.sh
