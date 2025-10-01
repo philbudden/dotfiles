@@ -2,8 +2,15 @@ extensions:
 
   common:
     gh:
+    - gennaro-tedesco/gh-f
     - jparise/gh-cat
+    - k1low/gh-grep
+    - link/gh-token
+    - meiji163/gh-notify
+    - mislav/gh-cp
 
   host:
     gh:
     - nektos/gh-act
+    - yusakebe/gh-markdown-preview
+
