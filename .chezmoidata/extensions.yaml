@@ -1,0 +1,9 @@
+extensions:
+
+  common:
+    gh:
+    - jparise/gh-cat
+
+  host:
+    gh:
+    - nektos/gh-act
