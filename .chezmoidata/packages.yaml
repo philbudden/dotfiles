@@ -29,13 +29,14 @@ packages:
     - mssql-tools18
 
     apt:
-    - unixodbc-dev
     - apt-transport-https
     - ca-certificates
-    - software-properties-common
+    - containerd.io
     - docker-ce
     - docker-ce-cli
-    - containerd.io
+    - python3-venv
+    - software-properties-common
+    - unixodbc-dev
 
   darwin:
     nix:
