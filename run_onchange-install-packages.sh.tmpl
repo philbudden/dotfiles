@@ -25,10 +25,21 @@ fi
 nix-env -iA {{ . }}
 {{- end }}
 
+if ! gh auth status &>/dev/null; then
+  gh auth login
+fi
+
+{{- range .packages.common.gh }}
+gh extension install {{ . }}
+{{- end }}
+
 # Install packages if in host environment
 if [ "$isHost" = true ]; then
   {{- range .packages.host.nix }}
   nix-env -iA {{ . }}
+  {{- end }}
+  {{- range .packages.host.gh }}
+  gh extension install {{ . }}
   {{- end }}
 fi
 
