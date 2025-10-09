@@ -30,7 +30,7 @@ shutdown /r /t 0
 ```shell
 wsl --install Ubuntu-24.04
 ```
-- Follow the onscreen prompts, once Debian launches:
+- Follow the onscreen prompts, once the WSL instance launches:
 ```shell
 sudo apt update && sudo apt install curl xz-utils
 curl -L https://nixos.org/nix/install | sh
