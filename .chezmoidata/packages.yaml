@@ -15,7 +15,6 @@ packages:
     - gennaro-tedesco/gh-f
     - jparise/gh-cat
     - k1low/gh-grep
-    - link/gh-token
     - meiji163/gh-notify
     - mislav/gh-cp
 
