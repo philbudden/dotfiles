@@ -25,10 +25,25 @@ fi
 nix-env -iA {{ . }}
 {{- end }}
 
+if ! gh auth status &>/dev/null; then
+  # Add GitHub's SSH key fingerprint to known_hosts
+  mkdir -p ~/.ssh
+  ssh-keyscan github.com >> ~/.ssh/known_hosts
+  # Prompt user to login
+  gh auth login
+fi
+
+{{- range .packages.common.gh }}
+gh extension install {{ . }}
+{{- end }}
+
 # Install packages if in host environment
 if [ "$isHost" = true ]; then
   {{- range .packages.host.nix }}
   nix-env -iA {{ . }}
+  {{- end }}
+  {{- range .packages.host.gh }}
+  gh extension install {{ . }}
   {{- end }}
 fi
 

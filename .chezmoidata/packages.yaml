@@ -11,6 +11,13 @@ packages:
     - nixpkgs.unzip
     - nixpkgs.zoxide
 
+    gh:
+    - gennaro-tedesco/gh-f
+    - jparise/gh-cat
+    - k1low/gh-grep
+    - meiji163/gh-notify
+    - mislav/gh-cp
+
   host:
     nix:
     - nixpkgs.devpod
@@ -19,6 +26,10 @@ packages:
     - nixpkgs.lazydocker
     - nixpkgs.lazysql
     - nixpkgs.tmux
+
+    gh:
+    - nektos/gh-act
+    - yusakebe/gh-markdown-preview
 
   wsl2:
     nix:
