@@ -18,6 +18,9 @@ packages:
     - meiji163/gh-notify
     - mislav/gh-cp
 
+    pip:
+    - cnxns
+
   host:
     nix:
     - nixpkgs.devpod
