@@ -37,6 +37,10 @@ fi
 gh extension install {{ . }}
 {{- end }}
 
+{{- range .packages.common.pip }}
+pip install {{ . }}
+{{- end }}
+
 # Install packages if in host environment
 if [ "$isHost" = true ]; then
   {{- range .packages.host.nix }}
