@@ -44,7 +44,6 @@ packages:
     # bluefin only
     brew:
     - dysk
-    - jetbrains-mono
     - lazydocker
     - lazysql
     - tmux
