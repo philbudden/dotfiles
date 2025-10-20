@@ -70,6 +70,12 @@ packages:
     - software-properties-common
     - unixodbc-dev
 
+  bluefin:
+    flatpak:
+    - com.bitwarden.desktop
+    - md.obsidian.Obsidian
+    - com.protonvpn.www
+
   darwin:
     nix:
     - nixpkgs.docker

@@ -109,3 +109,10 @@ if [ "$isDarwin" = true ]; then
   brew install --cask {{ . | quote }}
   {{- end }}
 fi
+
+# Install additional packages if in Bluefin environment
+if [ "$isBluefin" = true ]; then
+  {{- range .packages.bluefin.flatpak }}
+  flatpak install flathub {{ . | quote }}
+  {{- end }}
+fi
