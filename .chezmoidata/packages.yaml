@@ -11,6 +11,17 @@ packages:
     - nixpkgs.unzip
     - nixpkgs.zoxide
 
+    # bluefin only
+    brew:
+    - bat
+    - gh
+    - jq
+    - neovim
+    - ripgrep
+    - starship
+    - unzip
+    - zoxide
+
     gh:
     - gennaro-tedesco/gh-f
     - jparise/gh-cat
@@ -29,6 +40,14 @@ packages:
     - nixpkgs.lazydocker
     - nixpkgs.lazysql
     - nixpkgs.tmux
+
+    # bluefin only
+    brew:
+    - dysk
+    - jetbrains-mono
+    - lazydocker
+    - lazysql
+    - tmux
 
     gh:
     - nektos/gh-act
