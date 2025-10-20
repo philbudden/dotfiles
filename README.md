@@ -4,11 +4,18 @@ Welcome to my dotfiles repo—a lovingly crafted mess of scripts, configs, and a
 
 ## :yawning_face: TLDR
 
-Linux:
+General Linux:
 ```shell
 curl -L https://nixos.org/nix/install | sh
 . ~/.nix-profile/etc/profile.d/nix.sh
 nix-env -iA nixpkgs.chezmoi
+chezmoi init --apply n3ddu8
+```
+
+Bluefin Atomic Linux:
+```shell
+sudo hostnamectl set-hostname atomac
+brew install chezmoi
 chezmoi init --apply n3ddu8
 ```
 
