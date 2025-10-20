@@ -4,6 +4,7 @@
 isHost=false
 isWSL2=false
 isDarwin=false
+isBluefin=false
 
 # macOS detection via uname
 if [ "$(uname)" = "Darwin" ]; then
@@ -14,6 +15,12 @@ if [ "$(uname)" = "Darwin" ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+# bluefin detection via uname
+if [ "$(uname -n)" = "atomac" ]; then
+  isHost=true
+  isBluefin=true
+fi
+
 # WSL2 detection via /mnt/c
 if [ -d /mnt/c ]; then
   isHost=true
@@ -21,9 +28,16 @@ if [ -d /mnt/c ]; then
 fi
 
 # Install common packages
-{{- range .packages.common.nix }}
-nix-env -iA {{ . }}
-{{- end }}
+# Bluefin doesn't currently support nix
+if [ "$isBluefin" = false ]; then
+  {{- range .packages.common.nix }}
+  nix-env -iA {{ . }}
+  {{- end }}
+else
+  {{- range .packages.common.brew }}
+  brew install {{ . }}
+  {{- end }}
+fi
 
 if ! gh auth status &>/dev/null; then
   # Add GitHub's SSH key fingerprint to known_hosts
@@ -43,9 +57,17 @@ pip install {{ . }}
 
 # Install packages if in host environment
 if [ "$isHost" = true ]; then
-  {{- range .packages.host.nix }}
-  nix-env -iA {{ . }}
-  {{- end }}
+
+  if [ "$isBluefin" = false ]; then
+    {{- range .packages.host.nix }}
+    nix-env -iA {{ . }}
+    {{- end }}
+  else
+    {{- range .packages.host.brew }}
+    brew install {{ . }}
+    {{- end }}
+  fi
+
   {{- range .packages.host.gh }}
   gh extension install {{ . }}
   {{- end }}
