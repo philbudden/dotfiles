@@ -73,27 +73,21 @@ packages:
   bluefin:
     flatpak:
     - com.bitwarden.desktop
-    - md.obsidian.Obsidian
-    - com.protonvpn.www
+    - dev.vencord.Vesktop
+    - org.remmina.Remmina
+    - io.dbeaver.DBeaverCommunity
 
   darwin:
-    nix:
-    - nixpkgs.docker
-    - nixpkgs.docker-compose
-
     # macos gui apps
     cask:
-    - bitwarden
     - copilot
-    - devpod
-    - discord
-    - ghostty
     - obsidian
     - proton-drive
     - proton-mail
     - protonvpn
-    - raycast
     - tailscale
     - utm
-    - whatsapp
-    - windows-app
+    - microsoft-teams
+    - microsoft-excel
+    - microsoft-word
+    - raspberry-pi-imager
