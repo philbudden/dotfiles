@@ -52,7 +52,6 @@ packages:
 
     gh:
     - nektos/gh-act
-    - yusakebe/gh-markdown-preview
 
   winlinux:
 
