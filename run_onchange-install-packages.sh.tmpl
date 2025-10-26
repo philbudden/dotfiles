@@ -4,8 +4,8 @@ set -euo pipefail
 
 # Template logic: extract profile from environment
 {{- $profile := .profile }}
-{{- if not $profile }}
-echo "❌ CHEZMOI_PROFILE environment variable is not set. Aborting."
+{{- if eq $profile "" }}
+echo "❌ CHEZMOI_PROFILE not set. Aborting."
 exit 1
 {{- end }}
 
