@@ -1,0 +1,22 @@
+pacakage-managers:
+
+  atomac:
+  - flatpak
+
+  common:
+  - gh
+  - nix
+  - pip
+
+  darwin:
+  - brew
+
+  host:
+  - gh
+  - nix
+
+  winlinux:
+  - apt
+  - atpeula
+  - nix
+

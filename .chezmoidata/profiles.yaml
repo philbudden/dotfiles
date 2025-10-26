@@ -1,0 +1,18 @@
+profiles:
+
+  atomac:
+  - common
+  - host
+  - atomac
+
+  darwin:
+  - darwin
+
+  devcontainer:
+  - common
+
+  winlinux:
+  - common
+  - host
+  - winlinux
+

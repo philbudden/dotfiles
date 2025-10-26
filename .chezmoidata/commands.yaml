@@ -1,0 +1,23 @@
+commands:
+
+  apt:
+  - sudo apt install -y
+
+  apteula:
+  - sudo ACCEPT_EULA=Y apt install -y
+
+  brew:
+  - brew install --cask 
+
+  flatpak:
+  - flatpak install flathub
+
+  gh:
+  - gh extension install 
+
+  nix:
+  - nix-env -iA 
+
+  pip:
+  - pip install
+
