@@ -4,8 +4,8 @@ pacakage-managers:
   - flatpak
 
   common:
-  - gh
   - nix
+  - gh
   - pip
 
   darwin:
