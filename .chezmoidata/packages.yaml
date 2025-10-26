@@ -4,7 +4,7 @@ packages:
     flatpak:
     - com.bitwarden.desktop
     # - dev.vencord.Vesktop
-    - org.remmina.Remmina
+    # - org.remmina.Remmina
     - io.dbeaver.DBeaverCommunity
 
   common:
