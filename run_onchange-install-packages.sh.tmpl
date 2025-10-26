@@ -2,45 +2,46 @@
 
 set -euo pipefail
 
-# Extract the profile from environment or fallback
-{{- $profiles := {{- $profile := getenv "CHEZMOI_PROFILE" }}
+# Template logic: extract profile from environment
+{{- $profile := getenv "CHEZMOI_PROFILE" }}
 {{- if not $profile }}
 echo "❌ CHEZMOI_PROFILE environment variable is not set. Aborting."
 exit 1
 {{- end }}
-index .profiles $profile }}
+
+{{- $profiles := index .profiles $profile }}
 {{- $commands := .commands }}
 {{- $managers := index . "pacakage-managers" }}
 {{- $packages := .packages }}
 
-echo "Applying profile: {{ $profile }}"
-echo -n "Resolved groups:"
+echo "🚀 Applying profile: {{ $profile }}"
+echo -n "📦 Resolved groups:"
 {{- range $profiles }} echo -n " {{ . }}"{{ end }}
 echo
 
 # Loop over each group in the profile
 {{- range $group := $profiles }}
-  echo "Processing group: {{ $group }}"
+  echo "🔧 Processing group: {{ $group }}"
 
   {{- $groupManagers := index $managers $group }}
   {{- if $groupManagers }}
     {{- range $manager := $groupManagers }}
-      echo "  Using manager: {{ $manager }}"
+      echo "  🛠️ Using manager: {{ $manager }}"
 
       {{- $cmd := index $commands $manager | join " " }}
       {{- $groupPackages := index (index $packages $group) $manager }}
 
       {{- if $groupPackages }}
         {{- range $pkg := $groupPackages }}
-          echo "    Installing {{ $pkg }} with {{ $manager }}"
+          echo "    📦 Installing {{ $pkg }} with {{ $manager }}"
           {{ $cmd }} {{ $pkg }}
         {{- end }}
       {{- else }}
-        echo "    No packages defined for manager '{{ $manager }}' in group '{{ $group }}'"
+        echo "    ⚠️ No packages defined for manager '{{ $manager }}' in group '{{ $group }}'"
       {{- end }}
     {{- end }}
   {{- else }}
-    echo "  No managers defined for group '{{ $group }}'"
+    echo "  ⚠️ No managers defined for group '{{ $group }}'"
   {{- end }}
 {{- end }}
 
