@@ -1,118 +1,45 @@
 #!/bin/bash
 
-# Set environment variables
-isHost=false
-isWSL2=false
-isDarwin=false
-isBluefin=false
+set -euo pipefail
 
-# macOS detection via uname
-if [ "$(uname)" = "Darwin" ]; then
-  isHost=true
-  isDarwin=true
-  # Install Homebrew
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
+# Extract the profile from chezmoi data
+profile={{ .profile }}
 
-# bluefin detection via uname
-if [ "$(uname -n)" = "atomac" ]; then
-  isHost=true
-  isBluefin=true
-fi
+# Load profile groups
+{{- $profiles := index .profiles $profile }}
+{{- $commands := .commands }}
+{{- $managers := .["pacakage-managers"] }}
+{{- $packages := .packages }}
 
-# WSL2 detection via /mnt/c
-if [ -d /mnt/c ]; then
-  isHost=true
-  isWSL2=true
-fi
+echo "Applying profile: $profile"
+echo "Resolved groups: {{ range $profiles }}{{ . }} {{ end }}"
 
-# Install common packages
-# Bluefin doesn't currently support nix
-if [ "$isBluefin" = false ]; then
-  {{- range .packages.common.nix }}
-  nix-env -iA {{ . }}
+# Loop over each group in the profile
+{{- range $group := $profiles }}
+  echo "Processing group: {{ $group }}"
+
+  # Get managers for this group
+  {{- $groupManagers := index $managers $group }}
+  {{- if $groupManagers }}
+    {{- range $manager := $groupManagers }}
+      echo "  Using manager: {{ $manager }}"
+
+      # Get install command for this manager
+      {{- $cmd := index $commands $manager | join " " }}
+
+      # Get packages for this group and manager
+      {{- $groupPackages := index (index $packages $group) $manager }}
+      {{- if $groupPackages }}
+        {{- range $pkg := $groupPackages }}
+          echo "    Installing {{ $pkg }} with {{ $manager }}"
+          {{ $cmd }} {{ $pkg }}
+        {{- end }}
+      {{- else }}
+        echo "    No packages defined for manager '{{ $manager }}' in group '{{ $group }}'"
+      {{- end }}
+    {{- end }}
+  {{- else }}
+    echo "  No managers defined for group '{{ $group }}'"
   {{- end }}
-else
-  {{- range .packages.common.brew }}
-  brew install {{ . }}
-  {{- end }}
-fi
-
-if ! gh auth status &>/dev/null; then
-  # Add GitHub's SSH key fingerprint to known_hosts
-  mkdir -p ~/.ssh
-  ssh-keyscan github.com >> ~/.ssh/known_hosts
-  # Prompt user to login
-  gh auth login
-fi
-
-{{- range .packages.common.gh }}
-gh extension install {{ . }}
 {{- end }}
 
-{{- range .packages.common.pip }}
-pip install {{ . }}
-{{- end }}
-
-# Install packages if in host environment
-if [ "$isHost" = true ]; then
-
-  if [ "$isBluefin" = false ]; then
-    {{- range .packages.host.nix }}
-    nix-env -iA {{ . }}
-    {{- end }}
-  else
-    {{- range .packages.host.brew }}
-    brew install {{ . }}
-    {{- end }}
-  fi
-
-  {{- range .packages.host.gh }}
-  gh extension install {{ . }}
-  {{- end }}
-fi
-
-# Install additional packages if in WSL2 environment
-if [ "$isWSL2" = true ]; then
-  {{- range .packages.wsl2.nix }}
-  nix-env -iA {{ . }}
-  {{- end }}
-
-  # Install ODBC Driver 18 for SQL Server
-  curl -sSL -O https://packages.microsoft.com/config/ubuntu/$(grep VERSION_ID /etc/os-release | cut -d '"' -f 2)/packages-microsoft-prod.deb
-  sudo dpkg -i packages-microsoft-prod.deb
-  rm packages-microsoft-prod.deb
-  sudo apt update
-
-  # Ad docker repo
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-
-  {{- range .packages.wsl2.apteula }}
-  sudo ACCEPT_EULA=Y apt install -y {{ . }}
-  {{- end }}
-
-  {{- range .packages.wsl2.apt }}
-  sudo apt install -y {{ . }}
-  {{- end }}
-
-  source ~/.bashrc
-  sudo usermod -aG docker ${USER}
-  su - ${USER}
-
-fi
-
-# Install additional packages if in MacOS environment
-if [ "$isDarwin" = true ]; then
-  {{- range .packages.darwin.cask }}
-  brew install --cask {{ . | quote }}
-  {{- end }}
-fi
-
-# Install additional packages if in Bluefin environment
-if [ "$isBluefin" = true ]; then
-  {{- range .packages.bluefin.flatpak }}
-  flatpak install flathub {{ . | quote }}
-  {{- end }}
-fi
