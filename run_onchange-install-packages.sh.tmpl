@@ -6,7 +6,7 @@ set -euo pipefail
 {{- $profile := .profile }}
 {{- $profiles := index .profiles $profile }}
 {{- $commands := .commands }}
-{{- $managers := .["pacakage-managers"] }}
+{{- $managers := index . "pacakage-managers" }}
 {{- $packages := .packages }}
 
 echo "Applying profile: {{ $profile }}"
