@@ -10,7 +10,7 @@ commands:
   - brew install --cask 
 
   flatpak:
-  - flatpak install flathub
+  - flatpak install flathub -y
 
   gh:
   - gh extension install 
