@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Template logic: extract profile from environment
-{{- $profile := getenv "CHEZMOI_PROFILE" }}
+{{- $profile := .profile }}
 {{- if not $profile }}
 echo "❌ CHEZMOI_PROFILE environment variable is not set. Aborting."
 exit 1
