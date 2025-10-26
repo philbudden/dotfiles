@@ -3,32 +3,29 @@
 set -euo pipefail
 
 # Extract the profile from chezmoi data
-profile={{ .profile }}
-
-# Load profile groups
+{{- $profile := .profile }}
 {{- $profiles := index .profiles $profile }}
 {{- $commands := .commands }}
 {{- $managers := .["pacakage-managers"] }}
 {{- $packages := .packages }}
 
-echo "Applying profile: $profile"
-echo "Resolved groups: {{ range $profiles }}{{ . }} {{ end }}"
+echo "Applying profile: {{ $profile }}"
+echo -n "Resolved groups:"
+{{- range $profiles }} echo -n " {{ . }}"{{ end }}
+echo
 
 # Loop over each group in the profile
 {{- range $group := $profiles }}
   echo "Processing group: {{ $group }}"
 
-  # Get managers for this group
   {{- $groupManagers := index $managers $group }}
   {{- if $groupManagers }}
     {{- range $manager := $groupManagers }}
       echo "  Using manager: {{ $manager }}"
 
-      # Get install command for this manager
       {{- $cmd := index $commands $manager | join " " }}
-
-      # Get packages for this group and manager
       {{- $groupPackages := index (index $packages $group) $manager }}
+
       {{- if $groupPackages }}
         {{- range $pkg := $groupPackages }}
           echo "    Installing {{ $pkg }} with {{ $manager }}"
