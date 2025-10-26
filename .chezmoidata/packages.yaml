@@ -3,7 +3,7 @@ packages:
   atomac:
     flatpak:
     - com.bitwarden.desktop
-    - dev.vencord.Vesktop
+    # - dev.vencord.Vesktop
     - org.remmina.Remmina
     - io.dbeaver.DBeaverCommunity
 
