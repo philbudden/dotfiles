@@ -5,7 +5,7 @@ packages:
     - com.bitwarden.desktop
     # - dev.vencord.Vesktop
     # - org.remmina.Remmina
-    - io.dbeaver.DBeaverCommunity
+    # - io.dbeaver.DBeaverCommunity
 
   common:
     nix:
