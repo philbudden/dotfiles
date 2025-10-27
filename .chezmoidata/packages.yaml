@@ -1,5 +1,12 @@
 packages:
 
+  atomac:
+    flatpak:
+    - com.bitwarden.desktop
+    # - dev.vencord.Vesktop
+    # - org.remmina.Remmina
+    # - io.dbeaver.DBeaverCommunity
+
   common:
     nix:
     - nixpkgs.bat
@@ -11,17 +18,6 @@ packages:
     - nixpkgs.unzip
     - nixpkgs.zoxide
 
-    # bluefin only
-    brew:
-    - bat
-    - gh
-    - jq
-    - neovim
-    - ripgrep
-    - starship
-    - unzip
-    - zoxide
-
     gh:
     - gennaro-tedesco/gh-f
     - jparise/gh-cat
@@ -32,54 +28,8 @@ packages:
     pip:
     - cnxns
 
-  host:
-    nix:
-    - nixpkgs.devpod
-    - nixpkgs.dysk
-    - nixpkgs.jetbrains-mono
-    - nixpkgs.lazydocker
-    - nixpkgs.lazysql
-    - nixpkgs.tmux
-
-    # bluefin only
+  macdaddy:
     brew:
-    - dysk
-    - lazydocker
-    - lazysql
-    - tmux
-
-    gh:
-    - nektos/gh-act
-    - yusakebe/gh-markdown-preview
-
-  wsl2:
-    nix:
-    - nixpkgs.gcc
-
-    apteula:
-    - msodbcsql18
-    - mssql-tools18
-
-    apt:
-    - apt-transport-https
-    - ca-certificates
-    - containerd.io
-    - docker-ce
-    - docker-ce-cli
-    - python3-venv
-    - software-properties-common
-    - unixodbc-dev
-
-  bluefin:
-    flatpak:
-    - com.bitwarden.desktop
-    - dev.vencord.Vesktop
-    - org.remmina.Remmina
-    - io.dbeaver.DBeaverCommunity
-
-  darwin:
-    # macos gui apps
-    cask:
     - copilot
     - obsidian
     - proton-drive
@@ -91,3 +41,34 @@ packages:
     - microsoft-excel
     - microsoft-word
     - raspberry-pi-imager
+
+  host:
+    nix:
+    - nixpkgs.dysk
+    - nixpkgs.jetbrains-mono
+    - nixpkgs.lazydocker
+    - nixpkgs.lazysql
+    - nixpkgs.tmux
+
+    gh:
+    - nektos/gh-act
+
+  winlinux:
+
+    apt:
+    - apt-transport-https
+    - ca-certificates
+    - containerd.io
+    - docker-ce
+    - docker-ce-cli
+    - python3-venv
+    - software-properties-common
+    - unixodbc-dev
+
+    apteula:
+    - msodbcsql18
+    - mssql-tools18
+
+    nix:
+    - nixpkgs.gcc
+

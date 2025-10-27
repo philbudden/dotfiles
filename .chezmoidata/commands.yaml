@@ -1,0 +1,37 @@
+commands:
+
+  apt:
+    install:
+    - sudo apt install -y
+
+  apteula:
+    install:
+    - sudo ACCEPT_EULA=Y apt install -y
+
+  brew:
+    install:
+    - brew install --cask 
+
+  flatpak:
+    install:
+    - flatpak install flathub -y
+
+  gh:
+    preflight: |
+      if ! gh auth status &>/dev/null; then
+        echo "🔐 GitHub CLI not authenticated. Initiating login..."
+        mkdir -p ~/.ssh
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        gh auth login
+      fi
+    install:
+    - gh extension install
+
+  nix:
+    install:
+    - nix-env -iA 
+
+  pip:
+    install:
+    - pip install
+

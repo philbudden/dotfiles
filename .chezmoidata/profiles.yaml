@@ -1,0 +1,18 @@
+profiles:
+
+  atomac:
+  - common
+  - host
+  - atomac
+
+  macdaddy:
+  - macdaddy
+
+  devcontainer:
+  - common
+
+  winlinux:
+  - common
+  - host
+  - winlinux
+
