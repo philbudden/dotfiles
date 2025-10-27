@@ -1,4 +1,4 @@
-# :wizard: More Than Just Dotfiles
+# :muscle: More Than Just Dotfiles
 
 Welcome to the repo where dotfiles go to evolve, packages get installed without drama, and Chezmoi becomes the declarative deity of your system setup. If you're here expecting a humble .bashrc and a couple of aliases, you're in for a surprise. This is not a dotfiles repo. This is a lifestyle.
 
@@ -7,16 +7,16 @@ Welcome to the repo where dotfiles go to evolve, packages get installed without 
 This repo uses Chezmoi as the single source of truth for:
 
 - :open_file_folder: Dotfiles (obviously)
-- :box: Package management (Homebrew, apt, pip, flatpak, and even GitHub CLI extensions)
+- :package: Package management (Homebrew, apt, pip, flatpak, and even GitHub CLI extensions)
 - :brain: Declarative system setup across multiple profiles
-- :test-tube: Preflight checks that actually do something
+- :airplane: Preflight checks that actually do something
 - :thread: Modular YAML-driven orchestration that would make Ansible blush
 
 ## :jigsaw: How It Works (Semi-Seriously)
 
 Chezmoi reads from a constellation of .chezmoidata/*.yaml files to determine what packages to install, which managers to use, and how to behave based on your machine’s hostname. It’s like Hogwarts for sysadmins.
 
-### :file-folder: `.chezmoidata/commands.yaml`
+### :file_folder: `.chezmoidata/commands.yaml`
 
 Defines how each package manager installs things. Think of it as the sacred scroll of install incantations:
 ```yaml
@@ -34,7 +34,7 @@ gh:
 ```
 Yes, we run preflight checks. Yes, they’re real. Yes, they involve ssh-keyscan. You're welcome.
 
-### :construction-worker: `.chezmoidata/managers.yaml`
+### :construction_worker: `.chezmoidata/managers.yaml`
 
 Maps logical groups to their respective package managers.
 ```yaml
@@ -93,7 +93,7 @@ echo "🔧 Processing group: {{ $group }}"
 
 Because Ansible is overkill, Bash is underkill, and Chezmoi is just right. It’s reproducible, declarative, and doesn’t make you write 200 lines of YAML to install htop.
 
-## :yoga: Final Thoughts
+## :thought_balloon: Final Thoughts
 
 This repo is designed to be:
 
