@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-# Template logic: use hostname as profile, default to 'devcontainer' if not found
-{{- $profile := (trimSpace (output "hostname")) }}
+# Template logic: use exact hostname as profile, fallback to 'devcontainer' if not found
+{{- $profile := output "hostname" }}
 {{- $profiles := index .profiles $profile | default (index .profiles "devcontainer") }}
 {{- $commands := .commands }}
 {{- $managers := index . "pacakage-managers" }}
