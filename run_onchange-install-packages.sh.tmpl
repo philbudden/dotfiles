@@ -9,7 +9,7 @@ set -euo pipefail
 {{- $managers := index . "pacakage-managers" }}
 {{- $packages := .packages }}
 
-echo "🚀 Applying profile: {{ $profile }}"
+echo "🚀 Applying profile for: {{ $profile }}"
 echo -n "📦 Resolved groups:"
 {{- range $profiles }} echo -n " {{ . }}"{{ end }}
 echo
