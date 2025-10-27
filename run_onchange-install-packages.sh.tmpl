@@ -2,14 +2,9 @@
 
 set -euo pipefail
 
-# Template logic: extract profile from environment
-{{- $profile := .profile }}
-{{- if eq $profile "" }}
-echo "❌ CHEZMOI_PROFILE not set. Aborting."
-exit 1
-{{- end }}
-
-{{- $profiles := index .profiles $profile }}
+# Template logic: use hostname as profile, default to 'devcontainer' if not found
+{{- $profile := (trimSpace (output "hostname")) }}
+{{- $profiles := index .profiles $profile | default (index .profiles "devcontainer") }}
 {{- $commands := .commands }}
 {{- $managers := index . "pacakage-managers" }}
 {{- $packages := .packages }}
