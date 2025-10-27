@@ -14,6 +14,9 @@ echo -n "📦 Resolved groups:"
 {{- range $profiles }} echo -n " {{ . }}"{{ end }}
 echo
 
+# Track which managers have already run preflight
+{{- $ranPreflight := dict }}
+
 # Loop over each group in the profile
 {{- range $group := $profiles }}
   echo "🔧 Processing group: {{ $group }}"
@@ -23,7 +26,18 @@ echo
     {{- range $manager := $groupManagers }}
       echo "  🛠️ Using manager: {{ $manager }}"
 
-      {{- $cmd := index $commands $manager | join " " }}
+      # Run preflight once per manager if defined
+      {{- if not (index $ranPreflight $manager) }}
+        {{- $preflight := index $commands $manager "preflight" | default "" }}
+        {{- if $preflight }}
+          echo "  🚦 Running preflight for {{ $manager }}"
+          {{ $preflight }}
+        {{- end }}
+        {{- $_ := set $ranPreflight $manager true }}
+      {{- end }}
+
+      # Get install command and packages
+      {{- $cmd := index $commands $manager "install" | join " " | default (index $commands $manager | join " ") }}
       {{- $groupPackages := index (index $packages $group) $manager }}
 
       {{- if $groupPackages }}
