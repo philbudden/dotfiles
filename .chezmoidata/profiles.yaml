@@ -5,8 +5,8 @@ profiles:
   - host
   - atomac
 
-  darwin:
-  - darwin
+  macdaddy:
+  - macdaddy
 
   devcontainer:
   - common

@@ -8,7 +8,7 @@ pacakage-managers:
   - gh
   - pip
 
-  darwin:
+  macdaddy:
   - brew
 
   host:
