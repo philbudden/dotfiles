@@ -1,4 +1,4 @@
-pacakage-managers:
+package-managers:
 
   atomac:
   - flatpak
