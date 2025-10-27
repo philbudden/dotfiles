@@ -1,4 +1,4 @@
-# :muscle: More Than Just Dotfiles
+# :muscle: More than just dotfiles...
 
 Welcome to the repo where dotfiles go to evolve, packages get installed without drama, and Chezmoi becomes the declarative deity of your system setup. If you're here expecting a humble .bashrc and a couple of aliases, you're in for a surprise. This is not a dotfiles repo. This is a lifestyle.
 
