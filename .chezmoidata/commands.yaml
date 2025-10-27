@@ -10,6 +10,10 @@ commands:
 
   brew:
     install:
+    - brew install
+
+  cask:
+    install:
     - brew install --cask 
 
   flatpak:
@@ -26,10 +30,6 @@ commands:
       fi
     install:
     - gh extension install
-
-  nix:
-    install:
-    - nix-env -iA 
 
   pip:
     install:

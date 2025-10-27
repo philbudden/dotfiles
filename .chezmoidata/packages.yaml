@@ -8,15 +8,16 @@ packages:
     # - io.dbeaver.DBeaverCommunity
 
   common:
-    nix:
-    - nixpkgs.bat
-    - nixpkgs.gh
-    - nixpkgs.jq
-    - nixpkgs.neovim
-    - nixpkgs.ripgrep
-    - nixpkgs.starship
-    - nixpkgs.unzip
-    - nixpkgs.zoxide
+    brew:
+    - bat
+    - gcc
+    - gh
+    - jq
+    - neovim
+    - ripgrep
+    - starship
+    - unzip
+    - zoxide
 
     gh:
     - gennaro-tedesco/gh-f
@@ -43,12 +44,12 @@ packages:
     - raspberry-pi-imager
 
   host:
-    nix:
-    - nixpkgs.dysk
-    - nixpkgs.jetbrains-mono
-    - nixpkgs.lazydocker
-    - nixpkgs.lazysql
-    - nixpkgs.tmux
+    brew:
+    - dysk
+    - jetbrains-mono
+    - lazydocker
+    - lazysql
+    - tmux
 
     gh:
     - nektos/gh-act
@@ -68,7 +69,4 @@ packages:
     apteula:
     - msodbcsql18
     - mssql-tools18
-
-    nix:
-    - nixpkgs.gcc
 
