@@ -1,22 +1,22 @@
-pacakage-managers:
+package-managers:
 
   atomac:
   - flatpak
 
   common:
-  - nix
+  - brew
   - gh
   - pip
 
   macdaddy:
-  - brew
+  - cask
 
   host:
   - gh
-  - nix
+  - brew
 
   winlinux:
   - apt
   - atpeula
-  - nix
+  - brew
 

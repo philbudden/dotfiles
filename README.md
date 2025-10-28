@@ -1,167 +1,103 @@
-# :hammer_and_wrench: My Dotfiles: Declarative Chaos, Elegantly Managed
+# :muscle: More than just dotfiles...
 
-Welcome to my dotfiles repo—a lovingly crafted mess of scripts, configs, and automation rituals designed to tame the wild beast that is cross-platform setup. If you're here, you're either me (hi future n3ddu8 👋), a curious engineer, or someone who clicked the wrong link. Either way, buckle up.
+Welcome to the repo where dotfiles go to evolve, packages get installed without drama, and Chezmoi becomes the declarative deity of your system setup. If you're here expecting a humble .bashrc and a couple of aliases, you're in for a surprise. This is not a dotfiles repo. This is a lifestyle.
 
-## :yawning_face: TLDR
+## :rocket: What Is This?
 
-General Linux:
+This repo uses Chezmoi as the single source of truth for:
+
+- :open_file_folder: Dotfiles (obviously)
+- :package: Package management (Homebrew, apt, pip, flatpak, and even GitHub CLI extensions)
+- :brain: Declarative system setup across multiple profiles
+- :airplane: Preflight checks that actually do something
+- :thread: Modular YAML-driven orchestration that would make Ansible blush
+
+## :jigsaw: How It Works (Semi-Seriously)
+
+Chezmoi reads from a constellation of .chezmoidata/*.yaml files to determine what packages to install, which managers to use, and how to behave based on your machine’s hostname. It’s like Hogwarts for sysadmins.
+
+### :file_folder: `.chezmoidata/commands.yaml`
+
+Defines how each package manager installs things. Think of it as the sacred scroll of install incantations:
+```yaml
+brew:
+  install:
+  - brew install
+gh:
+  preflight: |
+    if ! gh auth status &>/dev/null; then
+      echo "🔐 GitHub CLI not authenticated. Initiating login..."
+      ...
+    fi
+  install:
+  - gh extension install
+```
+Yes, we run preflight checks. Yes, they’re real. Yes, they involve ssh-keyscan. You're welcome.
+
+### :construction_worker: `.chezmoidata/managers.yaml`
+
+Maps logical groups to their respective package managers.
+```yaml
+package-managers:
+  common:
+  - brew
+  - gh
+  - pip
+```
+Each group, like common, macdaddy (yes, macdaddy is a profile, no I won’t apologise, naming things is hard, laughing at them is easy), winlinux etc, gets its own set of managers. It’s like Hogwarts houses, but for install commands.
+
+### :package: `.chezmoidata/packages.yaml`
+
+Specifies what each group should install with each manager. You fill in the blanks. I won’t judge your choice of CLI tools.
+```yaml
+packages:
+  common:
+    brew:
+    - htop
+    - jq
+    gh:
+    - copilot
+    pip:
+    - rich
+```
+### :dna: `.chezmoidata/profiles.yaml`
+
+Maps hostnames to profiles. Profiles are just bundles of groups. Groups are bundles of packages. Packages are bundles of joy.
+```yaml
+profiles:
+  macdaddy:
+  - macdaddy
+  devcontainer:
+  - common
+```
+Your hostname determines your destiny. If it’s not found, you get the devcontainer profile. It’s like the sorting hat, but with fewer hats.
+
+### :hammer_and_wrench: `run_onchange-install-packages.sh.tmpl`
+
+This is the bash-powered engine that ties it all together. It:
+
+1. Resolves your profile based on hostname
+2. Loops through each group
+3. Runs preflight checks (once per manager)
+4. Installs packages with the correct command
+5. Logs everything with emoji-powered commentary
+
 ```shell
-curl -L https://nixos.org/nix/install | sh
-. ~/.nix-profile/etc/profile.d/nix.sh
-nix-env -iA nixpkgs.chezmoi
-chezmoi init --apply n3ddu8
+echo "🚀 Applying profile for: {{ $profile }}"
+echo -n "📦 Resolved groups:"
+...
+echo "🔧 Processing group: {{ $group }}"
 ```
 
-Bluefin Atomic Linux:
-```shell
-sudo hostnamectl set-hostname atomac
-brew install chezmoi
-chezmoi init --apply n3ddu8
-```
+## :thinking: Why Chezmoi?
 
-MacOS:
-```shell
-xcode-select --install
-curl -L https://nixos.org/nix/install | sh
-. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-nix-env -iA nixpkgs.chezmoi
-chezmoi init --apply n3ddu8
-```
+Because Ansible is overkill, Bash is underkill, and Chezmoi is just right. It’s reproducible, declarative, and doesn’t make you write 200 lines of YAML to install htop.
 
-Windows:
-```shell
-wsl --install
-shutdown /r /t 0
-```
-- Once rebooted:
-```shell
-wsl --install Ubuntu-24.04
-```
-- Follow the onscreen prompts, once the WSL instance launches:
-```shell
-sudo apt update && sudo apt install curl xz-utils
-curl -L https://nixos.org/nix/install | sh
-. ~/.nix-profile/etc/profile.d/nix.sh
-nix-env -iA nixpkgs.chezmoi
-chezmoi init --apply n3ddu8
-```
+## :thought_balloon: Final Thoughts
 
-## :rocket: What This Is
+This repo is designed to be:
 
-This repo uses [chezmoi](https://www.chezmoi.io/) to manage my personal and professional environments across:
-
-- :window: Windows (WSL2)
-- :penguin: Linux (x86_64 + aarch64)
-- :apple: macOS
-
-It’s a work in progress, but the goal is simple: one command, full setup, zero regrets.
-
-## :mage_man: Philosophy
-
-Why Nix? Because I like my setups like I like my coffee: reproducible, cross-platform, and slightly over-engineered.
-
-I started with Homebrew, but it turns out Linux aarch64 support is... aspirational. GUI apps? Also nope. So I pivoted to Nix—not because I wanted to summon the full wrath of the Nix community (“just use Home Manager!”), but because:
-
-- It works on everything.
-- It speaks architecture fluently.
-- It lets me pretend I’m a wizard casting spells with `nix-env`.
-
-Yes, I know about Home Manager and Nix Darwin. No, I’m not ready. Let me live.
-
-## :package: Package Management
-
-Packages are defined in `.chezmoidata/packages.yaml`, split into:
-
-- `common.nix`: Stuff I want everywhere!
-- `host.nix`: Stuff I want everywhere that isn't a container!
-- `wsl2.nix`: Stuff I want in WSL2!
-- `darwin.nix`: Stuff I want in macOS!
-
-Install logic lives in `run_onchange_install-packages.sh.tmpl`, which chezmoi renders and runs when things change. It’s templated, declarative, and slightly cursed.
-
-## :test_tube: Setup Instructions
-
-1. **Install Pre-reqs**
-   - On Linux (Debian derivitives) ensure pre-reqs are installed:
-   ```shell
-   sudo apt update && \
-     sudo apt install curl xz-utils
-   ```
-   - On MacOS:
-   ```shell
-   xcode-select --install
-   ```
-2. **Install Nix**
-   ```shell
-   curl -L https://nixos.org/nix/install | sh
-   ```
-   You will need to refresh your shell to make the `nix-env` command available:
-     - On Linux:
-     ```shell
-     . ~/.nix-profile/etc/profile.d/nix.sh
-     ```
-     - On MacOS:
-     ```shell
-     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-     ```
-3. **Install Chezmoi**
-   ```shell
-   nix-env -iA nixpkgs.chezmoi
-   ```
-4. **Let the magic happen**
-   ```shell
-   chezmoi init --apply $YOURGITHUBUSER
-   ```
-
-## :jigsaw: Future Plans
-
-- Add support for Windows and native Linux setups.
-
-- Introduce Homebrew (again) for macOS where Nix isn’t ideal.
-
-- Expand package definitions to include GUI apps, fonts, and other creature comforts.
-
-- Refactor into a modular, layered architecture that reflects my engineering philosophy.
-
-- Maybe—just maybe—embrace Home Manager and Nix Darwin.
-
-## :open_book: Notes
-
-- `.chezmoiignore` ignores README.md because I don’t want chezmoi touching this masterpiece.
-
-- `private_git_config` is where I keep my Git secrets. No peeking.
-
-## :brain: Why This Matters
-
-This isn’t just dotfiles—it’s a living, breathing reflection of my workflow rituals, engineering values, and refusal to settle for “close enough.” It’s declarative, reproducible, and built to scale across environments without losing its soul.
-
-## :question: FAQ: Questions Nobody Asked But I Answered Anyway
-
-**Q:** Why not just use Ansible? 
-**A:** Because I like pain. Also because Ansible doesn’t speak Nix, and I’m trying to build a declarative utopia, not a YAML swamp.
-
-**Q:** Why not use Home Manager like a normal Nix user? 
-**A:** Because I’m not normal. I’m emotionally invested in scripting my own onboarding rituals. Also, I like knowing exactly which part of my setup broke.
-
-**Q:** Why not use GUI tools? 
-**A:** Because I believe in the terminal. If I wanted buttons, I’d be a frontend developer. (No shade. Okay, some shade.)
-
-**Q:** Why is your install script templated in Go text format? 
-**A:** Because chezmoi said so. I don’t make the rules—I just bend them until they fit.
-
-**Q:** Why not just use one package manager? 
-**A:** Because I live on the edge. Also because Nix is the only one that doesn’t cry when I switch from x86_64 to aarch64.
-
-**Q:** Why are you using /mnt/c to detect WSL2? 
-**A:** Because WSL2 is a beautiful lie and I need to treat it like the special snowflake it is.
-
-**Q:** Why not just use Docker for everything? 
-**A:** Because I like my dotfiles to touch grass. Also, containers don’t solve existential dread.
-
-**Q:** Why is your README so sarcastic? 
-**A:** Because engineering is serious, but dotfiles are personal. This is my playground, not a compliance audit.
-
-**Q:** Are you okay? 
-**A:** Define “okay.” If by “okay” you mean “deep in a recursive dotfile refactor while debating the merits of ephemeral lock files,” then yes. If you mean “touching grass,” then no. But spiritually? I’m thriving.
-
-Still reading? You’re either very bored or very interested. Either way, I salute you :vulcan_salute:.
+- Atomic (no manual steps)
+- Reproducible (same result every time)
+- Declarative (YAML all the way down)
+- Playful (because life’s too short for boring dotfiles)

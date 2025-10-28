@@ -6,7 +6,7 @@ set -euo pipefail
 {{- $profile := output "hostname" }}
 {{- $profiles := index .profiles $profile | default (index .profiles "devcontainer") }}
 {{- $commands := .commands }}
-{{- $managers := index . "pacakage-managers" }}
+{{- $managers := index . "package-managers" }}
 {{- $packages := .packages }}
 
 echo "🚀 Applying profile for: {{ $profile }}"
