@@ -4,10 +4,8 @@ set -euo pipefail
 
 # Template logic: use exact hostname as profile, fallback to 'devcontainer' if not found
 {{- $profile := output "hostname" }}
-{{- $profiles := index .profiles "devcontainer" }} {{/* default fallback */}}
-{{- with index .profiles $profile }}
-  {{- $profiles = . }}
-{{- end }}
+{{- $resolved := index .profiles $profile }}
+{{- $profiles := $resolved | default (index .profiles "devcontainer") }}
 
 {{- $commands := .commands }}
 {{- $managers := index . "package-managers" }}
@@ -57,4 +55,3 @@ echo
     echo "  ⚠️ No managers defined for group '{{ $group }}'"
   {{- end }}
 {{- end }}
-
