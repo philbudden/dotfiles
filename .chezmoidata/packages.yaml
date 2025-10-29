@@ -37,8 +37,8 @@ packages:
     - utm
     - microsoft-teams
     - microsoft-excel
-    - microsoft-word
     - raspberry-pi-imager
+    - caffeine
 
   host:
     brew:
