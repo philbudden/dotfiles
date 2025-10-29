@@ -5,7 +5,8 @@
 {{- $commands := .commands }}
 {{- $packages := .packages }}
 
-{{- $profile := index $profiles $hostname }}
+{{- $profile := index $profiles $hostname | default (index .profiles "devcontainer") }}
+
 {{- range $group, $profile }}
   {{ $group }}
   {{- $grouppackages := index $packages $group }}
@@ -19,4 +20,5 @@
     {{ end }}
   {{ end }}
 {{ end }}
+
 
