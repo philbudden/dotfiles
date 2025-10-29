@@ -6,12 +6,13 @@
 {{- $packages := .packages }}
 
 {{- $profile := index $profiles $hostname | default (index .profiles "devcontainer") }}
+echo "⚙️ Processing groups {{ $profile }}"
 
 {{- range $group, $profile }}
-  {{ $group }}
+  echo "📦 Installing packages from {{ $group }}"
   {{- $grouppackages := index $packages $group }}
   {{- range $packagemanager, $packagelist := $grouppackages }}
-    {{ $packagemanager }}
+    echo "👷 Installing packages with {{ $packagemanager }}"
     {{- $commandlist := index $commands $packagemanager }}
     {{- $installcommand := index $commandlist "install" 0 }}
     {{- range $package, $packagelist }}
@@ -20,5 +21,4 @@
     {{ end }}
   {{ end }}
 {{ end }}
-
 
