@@ -30,7 +30,7 @@ packages:
     - cnxns
 
   macdaddy:
-    brew:
+    cask:
     - copilot
     - obsidian
     - proton-drive
