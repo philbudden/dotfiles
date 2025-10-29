@@ -1,56 +1,43 @@
 #!/bin/bash
 
-set -euo pipefail
-
-# Template logic: use exact hostname as profile, fallback to 'devcontainer' if not found
-{{- $profile := output "hostname" }}
-{{- $profiles := (hasKey .profiles $profile | ternary (index .profiles $profile) (index .profiles "devcontainer")) }}
-
+# load data
+{{- $hostname := .chezmoi.hostname }}
+{{- $profiles := .profiles }}
 {{- $commands := .commands }}
-{{- $managers := index . "package-managers" }}
 {{- $packages := .packages }}
 
-echo "🚀 Applying profile for: {{ $profile }}"
-echo -n "📦 Resolved groups:"
-{{- range $profiles }} echo -n " {{ . }}"{{ end }}
-echo
+# identify profile
+{{- $profile := index $profiles $hostname | default (index .profiles "devcontainer") }}
+echo "⚙️ Processing groups {{ $profile }}"
 
-# Track which managers have already run preflight
-{{- $ranPreflight := dict }}
+# track which packageManager has run preFlight
+{{- $ranPreFlight := dict }}
 
-# Loop over each group in the profile
-{{- range $group := $profiles }}
-  echo "🔧 Processing group: {{ $group }}"
+{{- range $group, $profile }}
+  echo "📦 Installing packages from {{ $group }}"
+  {{- $groupPackages := index $packages $group }}
+  {{- range $packageManager, $packageList := $groupPackages }}
 
-  {{- $groupManagers := index $managers $group }}
-  {{- if $groupManagers }}
-    {{- range $manager := $groupManagers }}
-      echo "  🛠️ Using manager: {{ $manager }}"
+    echo "👷 Installing packages with {{ $packageManager }}"
+    {{- $commandList := index $commands $packageManager }}
 
-      # Run preflight once per manager if defined
-      {{- if not (index $ranPreflight $manager) }}
-        {{- $preflight := index $commands $manager "preflight" | default "" }}
-        {{- if $preflight }}
-          echo "  🚦 Running preflight for {{ $manager }}"
-          {{ $preflight }}
+    # check preFlight
+    {{- if not (index $ranPreFlight $packageManager) }}
+      {{- $preFlightCommand := index $commandList "preflight" | default "" }}
+        {{- if $preFlightCommand }}
+          echo " ✈️ Running preflight for {{ $packageManager }}"
+          {{ $preFlightCommand }}
         {{- end }}
-        {{- $_ := set $ranPreflight $manager true }}
+        {{- $_ := set $ranPreFlight $packageManager true }}
       {{- end }}
 
-      # Get install command and packages
-      {{- $cmd := index $commands $manager "install" | join " " | default (index $commands $manager | join " ") }}
-      {{- $groupPackages := index (index $packages $group) $manager }}
+    # install packages
+    {{- $installCommand := index $commandList "install" 0 }}
+    {{- range $package, $packageList }}
+      {{ $installPackage := print $installCommand " " $package }}
+      {{ $installPackage }}
+    {{ end }}
 
-      {{- if $groupPackages }}
-        {{- range $pkg := $groupPackages }}
-          echo "    📦 Installing {{ $pkg }} with {{ $manager }}"
-          {{ $cmd }} {{ $pkg }}
-        {{- end }}
-      {{- else }}
-        echo "    ⚠️ No packages defined for manager '{{ $manager }}' in group '{{ $group }}'"
-      {{- end }}
-    {{- end }}
-  {{- else }}
-    echo "  ⚠️ No managers defined for group '{{ $group }}'"
-  {{- end }}
-{{- end }}
+  {{ end }}
+{{ end }}
+
