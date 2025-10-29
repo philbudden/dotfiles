@@ -26,10 +26,7 @@ packages:
     - meiji163/gh-notify
     - mislav/gh-cp
 
-    pip:
-    - cnxns
-
-  macdaddy:
+  machost:
     cask:
     - copilot
     - obsidian
@@ -53,6 +50,9 @@ packages:
 
     gh:
     - nektos/gh-act
+
+    pip:
+    - cnxns
 
   winlinux:
 

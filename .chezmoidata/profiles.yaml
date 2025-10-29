@@ -1,12 +1,12 @@
 profiles:
 
-  atomac:
+  apollo:
   - common
   - host
   - atomac
 
-  macdaddy:
-  - macdaddy
+  zeus:
+  - machost
 
   devcontainer:
   - common

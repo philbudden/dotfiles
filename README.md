@@ -53,8 +53,8 @@ packages:
 Maps hostnames to profiles. Profiles are just bundles of groups. Groups are bundles of packages. Packages are bundles of joy.
 ```yaml
 profiles:
-  macdaddy:
-  - macdaddy
+  zeus:
+  - machost
   devcontainer:
   - common
 ```
