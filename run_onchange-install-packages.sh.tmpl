@@ -4,8 +4,10 @@ set -euo pipefail
 
 # Template logic: use exact hostname as profile, fallback to 'devcontainer' if not found
 {{- $profile := output "hostname" }}
-{{- $resolved := index .profiles $profile }}
-{{- $profiles := $resolved | default (index .profiles "devcontainer") }}
+{{- $profiles := index .profiles "devcontainer" }} {{/* default fallback */}}
+{{- if hasKey .profiles $profile }}
+  {{- $profiles = index .profiles $profile }}
+{{- end }}
 
 {{- $commands := .commands }}
 {{- $managers := index . "package-managers" }}
