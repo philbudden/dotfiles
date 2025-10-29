@@ -34,18 +34,6 @@ gh:
 ```
 Yes, we run preflight checks. Yes, they’re real. Yes, they involve ssh-keyscan. You're welcome.
 
-### :construction_worker: `.chezmoidata/managers.yaml`
-
-Maps logical groups to their respective package managers.
-```yaml
-package-managers:
-  common:
-  - brew
-  - gh
-  - pip
-```
-Each group, like common, macdaddy (yes, macdaddy is a profile, no I won’t apologise, naming things is hard, laughing at them is easy), winlinux etc, gets its own set of managers. It’s like Hogwarts houses, but for install commands.
-
 ### :package: `.chezmoidata/packages.yaml`
 
 Specifies what each group should install with each manager. You fill in the blanks. I won’t judge your choice of CLI tools.
