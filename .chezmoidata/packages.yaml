@@ -4,8 +4,9 @@ packages:
     flatpak:
     - com.bitwarden.desktop
     # - dev.vencord.Vesktop
-    # - org.remmina.Remmina
     # - io.dbeaver.DBeaverCommunity
+    - org.gimp.GIMP
+    # - org.remmina.Remmina
 
   common:
     brew:
@@ -28,17 +29,17 @@ packages:
 
   machost:
     cask:
-    - obsidian
+    - caffeine
+    - microsoft-excel
+    - microsoft-teams
     - obs
+    - obsidian
     - proton-drive
     - proton-mail
     - protonvpn
+    - raspberry-pi-imager
     - tailscale
     - utm
-    - microsoft-teams
-    - microsoft-excel
-    - raspberry-pi-imager
-    - caffeine
 
   host:
     brew:
