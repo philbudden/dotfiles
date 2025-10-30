@@ -28,7 +28,6 @@ packages:
 
   machost:
     cask:
-    - copilot
     - obsidian
     - proton-drive
     - proton-mail
