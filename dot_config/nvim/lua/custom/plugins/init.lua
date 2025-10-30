@@ -14,4 +14,8 @@ return {
 			vim.cmd("colorscheme gruvbox")
 		end,
 	},
+	{
+		"NoahTheDuke/vim-just",
+		ft = { "just" },
+	},
 }
