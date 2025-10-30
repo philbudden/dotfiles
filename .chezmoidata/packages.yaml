@@ -29,6 +29,7 @@ packages:
   machost:
     cask:
     - obsidian
+    - obs
     - proton-drive
     - proton-mail
     - protonvpn
