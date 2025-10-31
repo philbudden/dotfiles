@@ -3,10 +3,7 @@ packages:
   atomac:
     flatpak:
     - com.bitwarden.desktop
-    # - dev.vencord.Vesktop
-    # - io.dbeaver.DBeaverCommunity
     - org.gimp.GIMP
-    # - org.remmina.Remmina
 
   common:
     brew:
@@ -30,6 +27,7 @@ packages:
   machost:
     cask:
     - caffeine
+    - discord
     - microsoft-excel
     - microsoft-teams
     - obs
