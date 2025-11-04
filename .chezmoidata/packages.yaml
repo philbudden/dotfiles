@@ -26,6 +26,7 @@ packages:
 
   machost:
     cask:
+    - bitwarden
     - caffeine
     - discord
     - microsoft-excel
@@ -38,6 +39,7 @@ packages:
     - raspberry-pi-imager
     - tailscale
     - utm
+    - whatsapp
 
   host:
     brew:
