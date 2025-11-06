@@ -38,6 +38,8 @@ packages:
     - gog-galaxy
     - steam
     - gimp
+    - raycast
+    - ghostty
 
   host:
     brew:
