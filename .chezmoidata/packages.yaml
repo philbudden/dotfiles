@@ -1,10 +1,5 @@
 packages:
 
-  atomac:
-    flatpak:
-    - com.bitwarden.desktop
-    - org.gimp.GIMP
-
   common:
     brew:
     - bat
@@ -42,6 +37,7 @@ packages:
     - whatsapp
     - gog-galaxy
     - steam
+    - gimp
 
   host:
     brew:
