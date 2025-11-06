@@ -40,6 +40,8 @@ packages:
     - tailscale
     - utm
     - whatsapp
+    - gog-galaxy
+    - steam
 
   host:
     brew:
