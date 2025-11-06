@@ -35,8 +35,6 @@ packages:
     - tailscale
     - utm
     - whatsapp
-    - gog-galaxy
-    - steam
     - gimp
     - raycast
     - ghostty
