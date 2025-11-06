@@ -3,7 +3,6 @@ profiles:
   apollo:
   - common
   - host
-  - atomac
 
   zeus:
   - machost
