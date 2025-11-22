@@ -23,6 +23,7 @@ packages:
     cask:
     - bitwarden
     - caffeine
+    - dbeaver-community
     - discord
     - microsoft-excel
     - microsoft-teams
