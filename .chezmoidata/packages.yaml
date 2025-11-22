@@ -42,6 +42,10 @@ packages:
     - raycast
     - ghostty
 
+    brew:
+    - bash
+    - tmux
+
   host:
     brew:
     - dysk
