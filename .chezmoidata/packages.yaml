@@ -25,6 +25,8 @@ packages:
     - caffeine
     - dbeaver-community
     - discord
+    - docker
+    - docker-compose
     - microsoft-excel
     - microsoft-teams
     - obs
