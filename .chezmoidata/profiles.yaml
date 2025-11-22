@@ -5,6 +5,7 @@ profiles:
   - host
 
   zeus:
+  - common
   - machost
 
   devcontainer:
