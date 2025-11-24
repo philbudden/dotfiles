@@ -27,6 +27,9 @@ packages:
     - discord
     - docker
     - docker-compose
+    - ghostty
+    - gimp
+    - microsoft-azure-storage-explorer
     - microsoft-excel
     - microsoft-teams
     - obs
@@ -35,12 +38,10 @@ packages:
     - proton-mail
     - protonvpn
     - raspberry-pi-imager
+    - raycast
     - tailscale
     - utm
     - whatsapp
-    - gimp
-    - raycast
-    - ghostty
 
     brew:
     - bash
