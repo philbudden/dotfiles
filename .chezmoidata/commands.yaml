@@ -13,6 +13,9 @@ commands:
       if ! command -v brew &>/dev/null; then
         echo "🍺 Homebrew not found. Installing..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        echo >> /home/vscode/.bashrc
+        echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/vscode/.bashrc
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
       fi
     install:
     - brew install
