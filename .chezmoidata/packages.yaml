@@ -23,13 +23,13 @@ packages:
     cask:
     - bitwarden
     - caffeine
+    - cyberduck
     - dbeaver-community
     - discord
     - docker
     - docker-compose
     - ghostty
     - gimp
-    - microsoft-azure-storage-explorer
     - microsoft-excel
     - microsoft-teams
     - obs
