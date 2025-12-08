@@ -53,6 +53,9 @@ packages:
     - whatsapp
     - zen
 
+    brew:
+    - ansible
+
   host:
     brew:
     - dysk
