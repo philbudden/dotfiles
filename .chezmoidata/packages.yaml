@@ -19,15 +19,23 @@ packages:
     - meiji163/gh-notify
     - mislav/gh-cp
 
-  machost:
+  mac:
+    cask:
+    - caffeine
+    - docker
+    - docker-compose
+    - tailscale
+
+    brew:
+    - bash
+    - tmux
+
+  macworkstation:
     cask:
     - bitwarden
-    - caffeine
     - cyberduck
     - dbeaver-community
     - discord
-    - docker
-    - docker-compose
     - ghostty
     - gimp
     - microsoft-excel
@@ -41,14 +49,9 @@ packages:
     - protonvpn
     - raspberry-pi-imager
     - raycast
-    - tailscale
     - utm
     - whatsapp
     - zen
-
-    brew:
-    - bash
-    - tmux
 
   host:
     brew:

@@ -4,10 +4,9 @@ profiles:
   - common
   - host
 
-  zeus:
+  cronus:
   - common
-  - machost
-  - host
+  - mac
 
   devcontainer:
   - common
@@ -16,4 +15,10 @@ profiles:
   - common
   - host
   - winlinux
+
+  zeus:
+  - common
+  - host
+  - mac
+  - macworkstation
 
