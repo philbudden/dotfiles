@@ -24,14 +24,15 @@ packages:
     - caffeine
     - docker
     - docker-compose
-    - tailscale
 
     brew:
     - bash
     - tmux
+    - wget
 
   macworkstation:
     cask:
+    - betterdisplay
     - bitwarden
     - cyberduck
     - dbeaver-community
@@ -49,12 +50,18 @@ packages:
     - protonvpn
     - raspberry-pi-imager
     - raycast
+    - tailscale
     - utm
     - whatsapp
     - zen
 
     brew:
     - ansible
+
+  macserver:
+    brew:
+    # need non-GUI tailscale for SSH access
+    - tailscale
 
   host:
     brew:
