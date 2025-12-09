@@ -58,6 +58,12 @@ packages:
     brew:
     - ansible
 
+    curl:
+    # devpod
+    - -L -o devpod "https://github.com/loft-sh/devpod/releases/latest/download/devpod-darwin-arm64" && sudo install -c -m 0755 devpod /usr/local/bin && rm -f devpod
+    # fabric
+    - -fsSL https://raw.githubusercontent.com/danielmiessler/fabric/main/scripts/installer/install.sh | bash
+
   macserver:
     brew:
     # need non-GUI tailscale for SSH access

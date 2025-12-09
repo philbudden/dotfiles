@@ -24,6 +24,10 @@ commands:
     install:
     - brew install --cask 
 
+  curl:
+    install:
+    - curl
+
   flatpak:
     install:
     - flatpak install flathub -y
