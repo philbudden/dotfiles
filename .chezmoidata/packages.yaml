@@ -42,6 +42,7 @@ packages:
     - microsoft-excel
     - microsoft-outlook
     - microsoft-teams
+    - microsoft-word
     - obs
     - obsidian
     - pearcleaner
