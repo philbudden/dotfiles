@@ -76,6 +76,7 @@ packages:
     - jetbrains-mono
     - lazydocker
     - lazysql
+    - pandoc
     - tmux
 
     gh:
