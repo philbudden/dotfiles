@@ -55,6 +55,7 @@ packages:
     - utm
     - whatsapp
     - zen
+    - zoom
 
     brew:
     - ansible
