@@ -12,7 +12,7 @@ profiles:
   devcontainer:
   - common
 
-  hermes:
+  wsl:
   - common
   - host
   - winlinux
