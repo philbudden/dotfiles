@@ -102,3 +102,21 @@ packages:
     - msodbcsql18
     - mssql-tools18
 
+  pinas:
+
+    apt:
+    - cockpit
+    - distrobox
+    - duperemove
+    - firewalld
+    - pcp
+    - podman
+    - podman-compose
+    - rclone
+    - samba
+    - snapraid
+    - tmux
+
+    curl:
+      - -fsSL https://tailscale.com/install.sh | sh
+

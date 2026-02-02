@@ -47,3 +47,7 @@ commands:
     install:
     - pip install
 
+  wget:
+    install:
+    - wget
+

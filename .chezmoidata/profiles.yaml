@@ -23,3 +23,6 @@ profiles:
   - mac
   - macworkstation
 
+  pinas:
+  - pinas
+
