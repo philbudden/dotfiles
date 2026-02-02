@@ -115,8 +115,10 @@ packages:
     - rclone
     - samba
     - snapraid
+    - sscg
     - tmux
 
     curl:
       - -fsSL https://tailscale.com/install.sh | sh
+      - -LO https://github.com/45Drives/cockpit-file-sharing/releases/download/v4.5.2/cockpit-file-sharing_4.5.2-1jammy_all.deb && sudo apt install ./cockpit-file-sharing_4.5.2-1jammy_all.deb
 
