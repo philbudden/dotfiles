@@ -106,6 +106,7 @@ packages:
 
     apt:
     - cockpit
+    - cockpit-podman
     - distrobox
     - duperemove
     - firewalld
