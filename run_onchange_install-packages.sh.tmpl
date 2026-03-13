@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Skipping package install: Homebrew is not available in this environment."
+  exit 0
+fi
+
+brew_packages=(
+{{- range .packages.brew }}
+  {{ . | quote }}
+{{- end }}
+)
+
+gh_extensions=(
+{{- range .packages.gh_extensions }}
+  {{ . | quote }}
+{{- end }}
+)
+
+for package in "${brew_packages[@]}"; do
+  if brew list --formula "$package" >/dev/null 2>&1; then
+    echo "brew package present: $package"
+    continue
+  fi
+
+  echo "Installing brew package: $package"
+  brew install "$package"
+done
+
+if ! command -v gh >/dev/null 2>&1; then
+  echo "Skipping GitHub CLI extension install: gh is not available yet."
+  exit 0
+fi
+
+gh_auth_available=0
+if [ -n "${GH_TOKEN:-}" ] || [ -n "${GITHUB_TOKEN:-}" ]; then
+  gh_auth_available=1
+elif gh auth status >/dev/null 2>&1; then
+  gh_auth_available=1
+elif [ -f "${GH_CONFIG_DIR:-$HOME/.config/gh}/hosts.yml" ]; then
+  gh_auth_available=1
+fi
+
+if [ "$gh_auth_available" -ne 1 ]; then
+  echo "Skipping GitHub CLI extension install: reuse host auth via GH_CONFIG_DIR or set GH_TOKEN/GITHUB_TOKEN."
+  exit 0
+fi
+
+installed_extensions="$(gh extension list 2>/dev/null | awk 'NF { print $1 }')"
+for extension in "${gh_extensions[@]}"; do
+  if printf '%s\n' "$installed_extensions" | grep -Fxq "$extension"; then
+    echo "gh extension present: $extension"
+    continue
+  fi
+
+  echo "Installing gh extension: $extension"
+  gh extension install "$extension"
+done

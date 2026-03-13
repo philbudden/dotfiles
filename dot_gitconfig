@@ -1,0 +1,12 @@
+[core]
+    editor = nvim
+[fetch]
+    prune = true
+[init]
+    defaultBranch = main
+[pull]
+    rebase = false
+[push]
+    autoSetupRemote = true
+[user]
+    useConfigOnly = true

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+bashrc="$HOME/.bashrc"
+start_marker='# >>> dotfiles bash integration >>>'
+end_marker='# <<< dotfiles bash integration <<<'
+
+managed_block=$(cat <<'BLOCK'
+# >>> dotfiles bash integration >>>
+if [ -f "$HOME/.bashrc.d/dotfiles.sh" ]; then
+  . "$HOME/.bashrc.d/dotfiles.sh"
+fi
+# <<< dotfiles bash integration <<<
+BLOCK
+)
+
+touch "$bashrc"
+tmp_file="$(mktemp)"
+
+awk -v start="$start_marker" -v end="$end_marker" '
+  $0 == start { skip = 1; next }
+  $0 == end { skip = 0; next }
+  !skip { print }
+' "$bashrc" > "$tmp_file"
+
+if [ -s "$tmp_file" ]; then
+  printf '\n' >> "$tmp_file"
+fi
+printf '%s\n' "$managed_block" >> "$tmp_file"
+
+mv "$tmp_file" "$bashrc"
