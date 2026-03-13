@@ -7,13 +7,13 @@ if ! command -v brew >/dev/null 2>&1; then
 fi
 
 brew_packages=(
-{{- range .packages.brew }}
+{{- range .brew }}
   {{ . | quote }}
 {{- end }}
 )
 
 gh_extensions=(
-{{- range .packages.gh_extensions }}
+{{- range .gh_extensions }}
   {{ . | quote }}
 {{- end }}
 )
