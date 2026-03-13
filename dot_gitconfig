@@ -8,5 +8,3 @@
     rebase = false
 [push]
     autoSetupRemote = true
-[user]
-    useConfigOnly = true
