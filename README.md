@@ -1,91 +1,136 @@
-# :muscle: More than just dotfiles...
+# dotfiles
 
-Welcome to the repo where dotfiles go to evolve, packages get installed without drama, and Chezmoi becomes the declarative deity of your system setup. If you're here expecting a humble .bashrc and a couple of aliases, you're in for a surprise. This is not a dotfiles repo. This is a lifestyle.
+A small, portable Chezmoi repository for ephemeral development environments.
 
-## :rocket: What Is This?
+The repo now does three things only:
 
-This repo uses Chezmoi as the single source of truth for:
+- applies a curated set of universal dotfiles
+- installs a curated universal Homebrew package list
+- adds dotfiles-managed Bash configuration without overwriting an existing `~/.bashrc`
 
-- :open_file_folder: Dotfiles (obviously)
-- :package: Package management (Homebrew, apt, pip, flatpak, and even GitHub CLI extensions)
-- :brain: Declarative system setup across multiple profiles
-- :airplane: Preflight checks that actually do something
-- :thread: Modular YAML-driven orchestration that would make Ansible blush
+Everything environment-specific has been removed. There is no hostname detection, no profile mapping, and no bootstrap-time `gh auth login`.
 
-## :jigsaw: How It Works (Semi-Seriously)
+## Quick start
 
-Chezmoi reads from a constellation of .chezmoidata/*.yaml files to determine what packages to install, which managers to use, and how to behave based on your machine’s hostname. It’s like Hogwarts for sysadmins.
+If `chezmoi` and `brew` are already available, one command applies the full setup:
 
-### :file_folder: `.chezmoidata/commands.yaml`
-
-Defines how each package manager installs things. Think of it as the sacred scroll of install incantations:
-```yaml
-brew:
-  install:
-  - brew install
-gh:
-  preflight: |
-    if ! gh auth status &>/dev/null; then
-      echo "🔐 GitHub CLI not authenticated. Initiating login..."
-      ...
-    fi
-  install:
-  - gh extension install
-```
-Yes, we run preflight checks. Yes, they’re real. Yes, they involve ssh-keyscan. You're welcome.
-
-### :package: `.chezmoidata/packages.yaml`
-
-Specifies what each group should install with each manager. You fill in the blanks. I won’t judge your choice of CLI tools.
-```yaml
-packages:
-  common:
-    brew:
-    - htop
-    - jq
-    gh:
-    - copilot
-    pip:
-    - rich
-```
-### :dna: `.chezmoidata/profiles.yaml`
-
-Maps hostnames to profiles. Profiles are just bundles of groups. Groups are bundles of packages. Packages are bundles of joy.
-```yaml
-profiles:
-  zeus:
-  - machost
-  devcontainer:
-  - common
-```
-Your hostname determines your destiny. If it’s not found, you get the devcontainer profile. It’s like the sorting hat, but with fewer hats.
-
-### :hammer_and_wrench: `run_onchange-install-packages.sh.tmpl`
-
-This is the bash-powered engine that ties it all together. It:
-
-1. Resolves your profile based on hostname
-2. Loops through each group
-3. Runs preflight checks (once per manager)
-4. Installs packages with the correct command
-5. Logs everything with emoji-powered commentary
-
-```shell
-echo "🚀 Applying profile for: {{ $profile }}"
-echo -n "📦 Resolved groups:"
-...
-echo "🔧 Processing group: {{ $group }}"
+```sh
+chezmoi init --apply <github-user-or-repo>
 ```
 
-## :thinking: Why Chezmoi?
+In the included devcontainer, both `chezmoi` and Homebrew are already available, so the same command works there too.
 
-Because Ansible is overkill, Bash is underkill, and Chezmoi is just right. It’s reproducible, declarative, and doesn’t make you write 200 lines of YAML to install htop.
+## Repository structure
 
-## :thought_balloon: Final Thoughts
+```text
+.
+├── .chezmoidata/
+│   └── packages.yaml
+├── .devcontainer/
+│   ├── devcontainer.json
+│   ├── devcontainer.local.example.json
+│   └── scripts/
+│       └── post-create.sh
+├── dot_bashrc.d/
+│   └── dotfiles.sh
+├── dot_config/
+│   ├── bash/rc.d/
+│   ├── ghostty/
+│   ├── nvim/
+│   └── starship.toml
+├── dot_gitconfig
+├── dot_tmux.conf
+├── empty_dot_hushlogin
+├── run_onchange_configure-bash.sh.tmpl
+└── run_onchange_install-packages.sh.tmpl
+```
 
-This repo is designed to be:
+## Chezmoi approach
 
-- Atomic (no manual steps)
-- Reproducible (same result every time)
-- Declarative (YAML all the way down)
-- Playful (because life’s too short for boring dotfiles)
+The Chezmoi model is intentionally simple:
+
+- static dotfiles live directly in the repo
+- `.chezmoidata/packages.yaml` contains the universal package list
+- `run_onchange_install-packages.sh.tmpl` installs Homebrew formulae and GitHub CLI extensions idempotently
+- `run_onchange_configure-bash.sh.tmpl` maintains a managed source block inside `~/.bashrc`
+
+The package hook will install Homebrew packages when `brew` exists. If GitHub authentication is not already available through `GH_CONFIG_DIR`, `GH_TOKEN`, or `GITHUB_TOKEN`, it skips `gh` extensions instead of starting an interactive login flow.
+
+## Safe Bash integration
+
+This repo no longer owns `~/.bashrc`.
+
+Instead, Chezmoi manages:
+
+- `~/.bashrc.d/dotfiles.sh`
+- `~/.config/bash/rc.d/*.sh`
+
+During `chezmoi apply`, the Bash integration hook adds or refreshes this block in `~/.bashrc`:
+
+```sh
+# >>> dotfiles bash integration >>>
+if [ -f "$HOME/.bashrc.d/dotfiles.sh" ]; then
+  . "$HOME/.bashrc.d/dotfiles.sh"
+fi
+# <<< dotfiles bash integration <<<
+```
+
+That keeps the user in control of their own `~/.bashrc` while making the repo-managed configuration modular and repeatable.
+
+## Sharing host GitHub authentication with containers
+
+The recommended pattern is to authenticate on the host once, then reuse that authentication inside containers.
+
+### Option 1: bind mount a host GitHub CLI config directory
+
+1. Authenticate on the host.
+2. Copy `.devcontainer/devcontainer.local.example.json` to `.devcontainer/devcontainer.local.json`.
+3. Rebuild the container.
+
+The example local override mounts the host GitHub CLI config directory to `/tmp/host-gh` and the base devcontainer sets `GH_CONFIG_DIR=/tmp/host-gh`. That lets `gh`, `gh-copilot`, and other tools that reuse GitHub CLI credentials work without re-authenticating in each new container.
+
+If you prefer a dedicated host-only credential directory, authenticate like this on the host first:
+
+```sh
+GH_CONFIG_DIR="$HOME/.config/gh-devcontainer" gh auth login --insecure-storage
+```
+
+Then point your local devcontainer override at `~/.config/gh-devcontainer` instead of `~/.config/gh`.
+
+### Option 2: inject a token from the host
+
+The base devcontainer also passes through `GH_TOKEN` and `GITHUB_TOKEN` from the host environment. This is useful for tools that follow the standard GitHub token environment variables rather than GitHub CLI config files.
+
+## Devcontainer design
+
+The devcontainer is intentionally generic:
+
+- standard devcontainer spec
+- terminal-first and editor-agnostic
+- no VS Code-specific assumptions
+- includes Homebrew and Chezmoi as features
+- optional automatic `chezmoi init --apply` through `CHEZMOI_INIT_REPO`
+
+To auto-initialize a user's own dotfiles inside the container, set this on the host before creating the container:
+
+```sh
+export CHEZMOI_INIT_REPO=<github-user-or-repo>
+```
+
+If you need extra arguments, also set:
+
+```sh
+export CHEZMOI_INIT_ARGS='--force'
+```
+
+For secrets or user-specific config, prefer one of these:
+
+- mount a host directory in `.devcontainer/devcontainer.local.json`
+- pass environment variables from the host
+- keep user-specific data in local, untracked files outside this repo
+
+## Notes
+
+- `dot_gitconfig` keeps only universal Git behavior and deliberately does not hardcode a user name or email.
+- `dot_tmux.conf` and Ghostty config were made portable by removing hardcoded Homebrew paths.
+- leftover upstream Neovim repository artifacts were pruned so the repo stays focused on actual dotfiles.
