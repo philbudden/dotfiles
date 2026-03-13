@@ -20,7 +20,16 @@ tmp_file="$(mktemp)"
 awk -v start="$start_marker" -v end="$end_marker" '
   $0 == start { skip = 1; next }
   $0 == end { skip = 0; next }
-  !skip { print }
+  !skip { lines[++count] = $0 }
+  END {
+    while (count > 0 && lines[count] == "") {
+      count--
+    }
+
+    for (i = 1; i <= count; i++) {
+      print lines[i]
+    }
+  }
 ' "$bashrc" > "$tmp_file"
 
 if [ -s "$tmp_file" ]; then
