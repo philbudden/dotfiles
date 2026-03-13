@@ -1,20 +1,19 @@
-packages:
-  brew:
-    - bash
-    - bat
-    - fzf
-    - gh
-    - jq
-    - neovim
-    - ripgrep
-    - starship
-    - tmux
-    - unzip
-    - zip
-    - zoxide
-  gh_extensions:
-    - gennaro-tedesco/gh-f
-    - github/gh-copilot
-    - jparise/gh-cat
-    - k1low/gh-grep
-    - mislav/gh-cp
+brew:
+  - bash
+  - bat
+  - fzf
+  - gh
+  - jq
+  - neovim
+  - ripgrep
+  - starship
+  - tmux
+  - unzip
+  - zip
+  - zoxide
+gh_extensions:
+  - gennaro-tedesco/gh-f
+  - github/gh-copilot
+  - jparise/gh-cat
+  - k1low/gh-grep
+  - mislav/gh-cp
