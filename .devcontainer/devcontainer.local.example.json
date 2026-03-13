@@ -1,9 +1,0 @@
-{
-  "mounts": [
-    "source=${localEnv:HOME}/.config/gh,target=/tmp/host-gh,type=bind,readonly",
-    "source=${localEnv:HOME}/.local/share/dotfiles-secrets,target=/tmp/host-secrets,type=bind,readonly"
-  ],
-  "containerEnv": {
-    "DOTFILES_SECRETS_DIR": "/tmp/host-secrets"
-  }
-}

@@ -28,7 +28,6 @@ In the included devcontainer, both `chezmoi` and Homebrew are already available,
 │   └── packages.yaml
 ├── .devcontainer/
 │   ├── devcontainer.json
-│   ├── devcontainer.local.example.json
 │   └── scripts/
 │       └── post-create.sh
 ├── dot_bashrc.d/
@@ -54,7 +53,7 @@ The Chezmoi model is intentionally simple:
 - `run_onchange_install-packages.sh.tmpl` installs Homebrew formulae and GitHub CLI extensions idempotently
 - `run_onchange_configure-bash.sh.tmpl` maintains a managed source block inside `~/.bashrc`
 
-The package hook will install Homebrew packages when `brew` exists. If GitHub authentication is not already available through `GH_CONFIG_DIR`, `GH_TOKEN`, or `GITHUB_TOKEN`, it skips `gh` extensions instead of starting an interactive login flow.
+The package hook will install Homebrew packages when `brew` exists. If `gh auth status` does not succeed, it skips `gh` extensions instead of starting an interactive login flow.
 
 ## Safe Bash integration
 
@@ -81,25 +80,30 @@ That keeps the user in control of their own `~/.bashrc` while making the repo-ma
 
 The recommended pattern is to authenticate on the host once, then reuse that authentication inside containers.
 
-### Option 1: bind mount a host GitHub CLI config directory
+### Preferred option: pass through a host-derived token
 
-1. Authenticate on the host.
-2. Copy `.devcontainer/devcontainer.local.example.json` to `.devcontainer/devcontainer.local.json`.
-3. Rebuild the container.
-
-The example local override mounts the host GitHub CLI config directory to `/tmp/host-gh` and the base devcontainer sets `GH_CONFIG_DIR=/tmp/host-gh`. That lets `gh`, `gh-copilot`, and other tools that reuse GitHub CLI credentials work without re-authenticating in each new container.
-
-If you prefer a dedicated host-only credential directory, authenticate like this on the host first:
+1. Authenticate once on the host:
 
 ```sh
-GH_CONFIG_DIR="$HOME/.config/gh-devcontainer" gh auth login --insecure-storage
+gh auth login
 ```
 
-Then point your local devcontainer override at `~/.config/gh-devcontainer` instead of `~/.config/gh`.
+2. Before creating or rebuilding the container, export a host-derived token:
 
-### Option 2: inject a token from the host
+```sh
+export GH_TOKEN="$(gh auth token)"
+export GITHUB_TOKEN="$GH_TOKEN"
+```
 
-The base devcontainer also passes through `GH_TOKEN` and `GITHUB_TOKEN` from the host environment. This is useful for tools that follow the standard GitHub token environment variables rather than GitHub CLI config files.
+The base `devcontainer.json` passes those variables through from the host environment, so `gh`, `gh-copilot`, `copilot-cli`, `coderabbit-cli`, and other GitHub-aware tools can reuse the host authentication without storing credentials in this repository or prompting on every rebuild.
+
+This is the portable default because it works whether the host stores GitHub CLI credentials in a keychain, a credential manager, or a plain file.
+
+### Optional advanced option: reuse a file-backed GitHub CLI config
+
+If your devcontainer tooling supports extra bind mounts and your host `gh` credentials are already stored in files, you can mount that directory read-only and set `GH_CONFIG_DIR` before creating the container.
+
+This is intentionally not baked into the repository because it is tooling-specific and does not work on hosts where `gh` uses a system credential store instead of file-backed credentials.
 
 ## Devcontainer design
 
@@ -110,6 +114,7 @@ The devcontainer is intentionally generic:
 - no VS Code-specific assumptions
 - includes Homebrew and Chezmoi as features
 - optional automatic `chezmoi init --apply` through `CHEZMOI_INIT_REPO`
+- passes through host-provided GitHub token environment variables
 
 To auto-initialize a user's own dotfiles inside the container, set this on the host before creating the container:
 
@@ -125,8 +130,8 @@ export CHEZMOI_INIT_ARGS='--force'
 
 For secrets or user-specific config, prefer one of these:
 
-- mount a host directory in `.devcontainer/devcontainer.local.json`
 - pass environment variables from the host
+- use tool-specific bind mounts outside this repository when you need them
 - keep user-specific data in local, untracked files outside this repo
 
 ## Notes

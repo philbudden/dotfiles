@@ -13,7 +13,6 @@
     "ghcr.io/rio/features/chezmoi:1": {}
   },
   "containerEnv": {
-    "GH_CONFIG_DIR": "/tmp/host-gh",
     "GH_TOKEN": "${localEnv:GH_TOKEN}",
     "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
     "CHEZMOI_INIT_REPO": "${localEnv:CHEZMOI_INIT_REPO}",
