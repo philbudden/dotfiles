@@ -6,12 +6,7 @@ if [ -n "${CHEZMOI_INIT_REPO:-}" ]; then
     echo "chezmoi already initialized; skipping automatic init."
   else
     echo "Initializing chezmoi from ${CHEZMOI_INIT_REPO}"
-    if [ -n "${CHEZMOI_INIT_ARGS:-}" ]; then
-      # shellcheck disable=SC2086
-      chezmoi init --apply ${CHEZMOI_INIT_ARGS} "${CHEZMOI_INIT_REPO}"
-    else
-      chezmoi init --apply "${CHEZMOI_INIT_REPO}"
-    fi
+    chezmoi init --apply "${CHEZMOI_INIT_REPO}"
   fi
 fi
 

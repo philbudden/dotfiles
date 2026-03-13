@@ -52,6 +52,7 @@ The Chezmoi model is intentionally simple:
 - `.chezmoidata/packages.yaml` contains the universal package list
 - `run_onchange_install-packages.sh.tmpl` installs Homebrew formulae and GitHub CLI extensions idempotently
 - `run_onchange_configure-bash.sh.tmpl` maintains a managed source block inside `~/.bashrc`
+- `.chezmoiignore` keeps repository-only files like `README.md` and `.devcontainer/` out of the target home directory
 
 The package hook will install Homebrew packages when `brew` exists. If `gh auth status` does not succeed, it skips `gh` extensions instead of starting an interactive login flow.
 
@@ -122,12 +123,6 @@ To auto-initialize a user's own dotfiles inside the container, set this on the h
 export CHEZMOI_INIT_REPO=<github-user-or-repo>
 ```
 
-If you need extra arguments, also set:
-
-```sh
-export CHEZMOI_INIT_ARGS='--force'
-```
-
 For secrets or user-specific config, prefer one of these:
 
 - pass environment variables from the host
@@ -137,5 +132,7 @@ For secrets or user-specific config, prefer one of these:
 ## Notes
 
 - `dot_gitconfig` keeps only universal Git behavior and deliberately does not hardcode a user name or email.
+- In fresh environments, set your Git identity once before committing:
+  `git config --global user.name "Your Name"` and `git config --global user.email "you@example.com"`.
 - `dot_tmux.conf` and Ghostty config were made portable by removing hardcoded Homebrew paths.
 - leftover upstream Neovim repository artifacts were pruned so the repo stays focused on actual dotfiles.
