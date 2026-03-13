@@ -1,0 +1,24 @@
+{
+  "name": "dotfiles",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false,
+      "configureZshAsDefaultShell": false,
+      "username": "automatic",
+      "userUid": "automatic",
+      "userGid": "automatic"
+    },
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
+    "ghcr.io/rio/features/chezmoi:1": {}
+  },
+  "containerEnv": {
+    "GH_CONFIG_DIR": "/tmp/host-gh",
+    "GH_TOKEN": "${localEnv:GH_TOKEN}",
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+    "CHEZMOI_INIT_REPO": "${localEnv:CHEZMOI_INIT_REPO}",
+    "CHEZMOI_INIT_ARGS": "${localEnv:CHEZMOI_INIT_ARGS}",
+    "DOTFILES_SECRETS_DIR": "${localEnv:DOTFILES_SECRETS_DIR}"
+  },
+  "postCreateCommand": "bash .devcontainer/scripts/post-create.sh"
+}
