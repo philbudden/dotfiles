@@ -16,6 +16,27 @@ path_append() {
   esac
 }
 
+init_brew_shellenv() {
+  local brew_bin
+
+  if command -v brew >/dev/null 2>&1; then
+    brew_bin="$(command -v brew)"
+  else
+    for brew_bin in \
+      /opt/homebrew/bin/brew \
+      /usr/local/bin/brew \
+      /home/linuxbrew/.linuxbrew/bin/brew
+    do
+      [ -x "$brew_bin" ] && break
+    done
+  fi
+
+  [ -x "${brew_bin:-}" ] || return 0
+  eval "$("$brew_bin" shellenv)"
+}
+
+init_brew_shellenv
+
 export EDITOR="${EDITOR:-nvim}"
 export BAT_THEME="${BAT_THEME:-gruvbox-dark}"
 export FZF_DEFAULT_COMMAND='rg --files'
