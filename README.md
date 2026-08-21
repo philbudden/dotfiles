@@ -1,91 +1,134 @@
-# :muscle: More than just dotfiles...
+# Dotfiles
 
-Welcome to the repo where dotfiles go to evolve, packages get installed without drama, and Chezmoi becomes the declarative deity of your system setup. If you're here expecting a humble .bashrc and a couple of aliases, you're in for a surprise. This is not a dotfiles repo. This is a lifestyle.
+Devcontainer-first dotfiles for my VS Code workflow.
 
-## :rocket: What Is This?
+This repository manages a small CLI and terminal setup for the environments where development actually happens: devcontainers. It does not try to provision my Mac, WSL2 host, graphical applications, Docker Desktop, OrbStack, Docker Engine, or machine-specific package recipes.
 
-This repo uses Chezmoi as the single source of truth for:
+## What This Repo Manages
 
-- :open_file_folder: Dotfiles (obviously)
-- :package: Package management (Homebrew, apt, pip, flatpak, and even GitHub CLI extensions)
-- :brain: Declarative system setup across multiple profiles
-- :airplane: Preflight checks that actually do something
-- :thread: Modular YAML-driven orchestration that would make Ansible blush
+- Portable CLI/development tools through `Brewfile`.
+- Dotfiles through GNU Stow packages under `stow/`.
+- Shell, Git, Starship and tmux configuration.
 
-## :jigsaw: How It Works (Semi-Seriously)
+## What This Repo Does Not Manage
 
-Chezmoi reads from a constellation of .chezmoidata/*.yaml files to determine what packages to install, which managers to use, and how to behave based on your machine’s hostname. It’s like Hogwarts for sysadmins.
+- macOS graphical applications.
+- Host terminal applications.
+- Ghostty configuration.
+- Docker Desktop, OrbStack or Docker Engine setup.
+- WSL2 provisioning.
+- SSH private keys.
+- Machine hostname profiles.
+- Neovim configuration.
+- Project-specific language runtimes or dependencies.
 
-### :file_folder: `.chezmoidata/commands.yaml`
+Project tooling should normally live in the relevant repository's devcontainer, not in this dotfiles repo.
 
-Defines how each package manager installs things. Think of it as the sacred scroll of install incantations:
-```yaml
-brew:
-  install:
-  - brew install
-gh:
-  preflight: |
-    if ! gh auth status &>/dev/null; then
-      echo "🔐 GitHub CLI not authenticated. Initiating login..."
-      ...
-    fi
-  install:
-  - gh extension install
-```
-Yes, we run preflight checks. Yes, they’re real. Yes, they involve ssh-keyscan. You're welcome.
+## Repository Layout
 
-### :package: `.chezmoidata/packages.yaml`
-
-Specifies what each group should install with each manager. You fill in the blanks. I won’t judge your choice of CLI tools.
-```yaml
-packages:
-  common:
-    brew:
-    - htop
-    - jq
-    gh:
-    - copilot
-    pip:
-    - rich
-```
-### :dna: `.chezmoidata/profiles.yaml`
-
-Maps hostnames to profiles. Profiles are just bundles of groups. Groups are bundles of packages. Packages are bundles of joy.
-```yaml
-profiles:
-  zeus:
-  - machost
-  devcontainer:
-  - common
-```
-Your hostname determines your destiny. If it’s not found, you get the devcontainer profile. It’s like the sorting hat, but with fewer hats.
-
-### :hammer_and_wrench: `run_onchange-install-packages.sh.tmpl`
-
-This is the bash-powered engine that ties it all together. It:
-
-1. Resolves your profile based on hostname
-2. Loops through each group
-3. Runs preflight checks (once per manager)
-4. Installs packages with the correct command
-5. Logs everything with emoji-powered commentary
-
-```shell
-echo "🚀 Applying profile for: {{ $profile }}"
-echo -n "📦 Resolved groups:"
-...
-echo "🔧 Processing group: {{ $group }}"
+```text
+.
+├── Brewfile
+├── README.md
+├── bootstrap.sh
+└── stow
+    ├── git
+    │   └── .gitconfig
+    ├── shell
+    │   ├── .bash_profile
+    │   ├── .bashrc
+    │   └── .hushlogin
+    ├── starship
+    │   └── .config/starship.toml
+    └── tmux
+        └── .tmux.conf
 ```
 
-## :thinking: Why Chezmoi?
+## Bootstrap In A New Devcontainer
 
-Because Ansible is overkill, Bash is underkill, and Chezmoi is just right. It’s reproducible, declarative, and doesn’t make you write 200 lines of YAML to install htop.
+Clone the repo inside the devcontainer, then run the bootstrap script:
 
-## :thought_balloon: Final Thoughts
+```bash
+git clone git@github.com:philbudden/dotfiles.git ~/Developer/dotfiles
+cd ~/Developer/dotfiles
+./bootstrap.sh
+```
 
-This repo is designed to be:
+The script will:
 
-- Atomic (no manual steps)
-- Reproducible (same result every time)
-- Declarative (YAML all the way down)
-- Playful (because life’s too short for boring dotfiles)
+1. Load Homebrew if it is already installed.
+2. Install Homebrew automatically when it appears to be running inside a container and Homebrew is missing.
+3. Run `brew bundle --file Brewfile`.
+4. Link the Stow packages into `$HOME`.
+
+After it finishes, restart the shell or run:
+
+```bash
+source ~/.bashrc
+```
+
+## Bootstrap On A Host
+
+Host setup is deliberately out of scope. If I choose to apply the same dotfiles on macOS or WSL2, Homebrew must already be installed. Then I can run:
+
+```bash
+cd ~/Developer/dotfiles
+./bootstrap.sh
+```
+
+The script will not install Homebrew automatically on a host. This is intentional: the host should remain mostly untouched, and daily development should happen inside devcontainers.
+
+## Packages
+
+`Brewfile` contains portable CLI tools only:
+
+- `bat`
+- `fd`
+- `fzf`
+- `gh`
+- `jq`
+- `neovim`
+- `ripgrep`
+- `starship`
+- `stow`
+- `tmux`
+- `unzip`
+- `zip`
+- `zoxide`
+
+Do not add graphical applications, host services, Docker packages, WSL setup packages, or project-specific runtimes here unless they are genuinely useful across most devcontainers.
+
+## Dotfile Linking
+
+Dotfiles are linked with GNU Stow:
+
+```bash
+stow --dir stow --target "$HOME" shell git starship tmux
+```
+
+Run this manually after changing Stow packages if package installation is not needed.
+
+## Neovim
+
+`neovim` is installed as a CLI tool through `Brewfile`, but this repository does not currently manage `~/.config/nvim`.
+
+Neovim configuration will move to a separate repository so it can keep its own Kickstart-based history and update process. Once that repository exists, bootstrap can grow a small clone/update step for it.
+
+## Git And SSH
+
+The repo manages generic Git defaults only. SSH keys and host-specific Git identities should remain outside the repo.
+
+For multiple GitHub organisations, use SSH host aliases and Git configuration that points individual repositories or directory trees at the right identity. Keep private keys out of this repository.
+
+## Design Notes
+
+This repo used to use Chezmoi with hostname-based package profiles. That was useful when hosts were the primary development environments. The current workflow is different: VS Code connects to Mac/WSL hosts, and the real development tooling lives inside devcontainers.
+
+The simpler model is now:
+
+1. Build or enter a devcontainer.
+2. Clone this repo.
+3. Run `./bootstrap.sh`.
+4. Work inside the container.
+
+No hostname detection, templating, package-manager orchestration, GUI app installation, or host provisioning is needed.
