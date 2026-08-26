@@ -4,6 +4,7 @@ set -euo pipefail
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 nvim_config_repo="${NVIM_CONFIG_REPO:-git@github.com:philbudden/neovim-config.git}"
 nvim_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+stow_packages=(shell git starship tmux)
 
 is_container() {
     [ -f /.dockerenv ] || [ -f /run/.containerenv ] || [ -n "${REMOTE_CONTAINERS:-}" ] || [ -n "${DEVCONTAINER:-}" ]
@@ -65,6 +66,34 @@ install_neovim_config() {
     git clone "$nvim_config_repo" "$nvim_config_dir"
 }
 
+backup_stow_conflicts() {
+    backup_dir="$HOME/.dotfiles-backup/$(date +%Y%m%d%H%M%S)"
+    made_backup_dir=0
+
+    for package in "${stow_packages[@]}"; do
+        while IFS= read -r -d '' source_path; do
+            relative_path="${source_path#"$repo_dir/stow/$package/"}"
+            target_path="$HOME/$relative_path"
+
+            if [ -L "$target_path" ]; then
+                continue
+            fi
+
+            if [ -e "$target_path" ]; then
+                if [ "$made_backup_dir" -eq 0 ]; then
+                    mkdir -p "$backup_dir"
+                    made_backup_dir=1
+                fi
+
+                backup_path="$backup_dir/$relative_path"
+                mkdir -p "$(dirname "$backup_path")"
+                echo "Moving existing $target_path to $backup_path"
+                mv "$target_path" "$backup_path"
+            fi
+        done < <(find "$repo_dir/stow/$package" -type f -print0)
+    done
+}
+
 if ! load_brew; then
     if is_container; then
         install_homebrew_for_container
@@ -79,8 +108,10 @@ fi
 echo "Installing CLI tools from Brewfile..."
 brew bundle --file "$repo_dir/Brewfile"
 
+backup_stow_conflicts
+
 echo "Linking dotfiles with GNU Stow..."
-stow --dir "$repo_dir/stow" --target "$HOME" shell git starship tmux
+stow --dir "$repo_dir/stow" --target "$HOME" "${stow_packages[@]}"
 
 install_neovim_config
 

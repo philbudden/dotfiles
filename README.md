@@ -60,8 +60,9 @@ The script will:
 1. Load Homebrew if it is already installed.
 2. Install Homebrew automatically when it appears to be running inside a container and Homebrew is missing.
 3. Run `brew bundle --file Brewfile`.
-4. Link the Stow packages into `$HOME`.
-5. Clone or update `git@github.com:philbudden/neovim-config.git` into `~/.config/nvim`.
+4. Move pre-existing files that would conflict with managed Stow links into `~/.dotfiles-backup/<timestamp>/`.
+5. Link the Stow packages into `$HOME`.
+6. Clone or update `git@github.com:philbudden/neovim-config.git` into `~/.config/nvim`.
 
 After it finishes, restart the shell or run:
 
