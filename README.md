@@ -1,6 +1,6 @@
 # Dotfiles
 
-Devcontainer-first dotfiles for my VS Code workflow.
+Devcontainer-first dotfiles for my terminal-native development workflow.
 
 This repository manages a small CLI and terminal setup for the environments where development actually happens: devcontainers. It does not try to provision my Mac, WSL2 host, graphical applications, Docker Desktop, OrbStack, Docker Engine, or machine-specific package recipes.
 
@@ -8,7 +8,7 @@ This repository manages a small CLI and terminal setup for the environments wher
 
 - Portable CLI/development tools through `Brewfile`.
 - Dotfiles through GNU Stow packages under `stow/`.
-- Shell, Git, Starship and tmux configuration.
+- Shell, Git and Starship configuration.
 - Installation of the separate Neovim configuration repository into `~/.config/nvim`.
 
 ## What This Repo Does Not Manage
@@ -45,10 +45,8 @@ Project tooling should normally live in the relevant repository's devcontainer, 
     │   ├── .zprofile
     │   ├── .zshrc
     │   └── .hushlogin
-    ├── starship
-    │   └── .config/starship.toml
-    └── tmux
-        └── .tmux.conf
+    └── starship
+        └── .config/starship.toml
 ```
 
 ## Bootstrap In A New Devcontainer
@@ -105,7 +103,6 @@ The script will not install Homebrew automatically on a host. This is intentiona
 - `ripgrep`
 - `starship`
 - `stow`
-- `tmux`
 - `unzip`
 - `zip`
 - `zoxide`
@@ -117,7 +114,7 @@ Do not add graphical applications, host services, Docker packages, WSL setup pac
 Dotfiles are linked with GNU Stow:
 
 ```bash
-stow --dir stow --target "$HOME" shell git starship tmux
+stow --dir stow --target "$HOME" shell git starship
 ```
 
 Run this manually after changing Stow packages if package installation is not needed.
@@ -132,6 +129,8 @@ The shell setup supports both Bash and Zsh without keeping two full configuratio
 - `.bash_profile` and `.zprofile` handle login-shell entrypoints.
 
 Use the default shell that fits the environment: Zsh on macOS, Bash in most Linux devcontainers and remote Linux systems, and whichever is least surprising in WSL2.
+
+`tmux` is intentionally not installed or configured here. It belongs to the host control-plane layer because project sessions live on the host side of the DevPod attach workflow.
 
 ## Neovim
 

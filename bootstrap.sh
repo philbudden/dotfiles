@@ -4,7 +4,7 @@ set -euo pipefail
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 nvim_config_repo="${NVIM_CONFIG_REPO:-https://github.com/philbudden/neovim-config.git}"
 nvim_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
-stow_packages=(shell git starship tmux)
+stow_packages=(shell git starship)
 
 is_container() {
     [ -f /.dockerenv ] || [ -f /run/.containerenv ] || [ -n "${REMOTE_CONTAINERS:-}" ] || [ -n "${DEVCONTAINER:-}" ]
