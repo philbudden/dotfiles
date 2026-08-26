@@ -50,7 +50,7 @@ Project tooling should normally live in the relevant repository's devcontainer, 
 Clone the repo inside the devcontainer, then run the bootstrap script:
 
 ```bash
-git clone git@github.com:philbudden/dotfiles.git ~/Developer/dotfiles
+git clone https://github.com/philbudden/dotfiles.git ~/Developer/dotfiles
 cd ~/Developer/dotfiles
 ./bootstrap.sh
 ```
@@ -62,7 +62,7 @@ The script will:
 3. Run `brew bundle --file Brewfile`.
 4. Move pre-existing files that would conflict with managed Stow links into `~/.dotfiles-backup/<timestamp>/`.
 5. Link the Stow packages into `$HOME`.
-6. Clone or update `git@github.com:philbudden/neovim-config.git` into `~/.config/nvim`.
+6. Clone or update `https://github.com/philbudden/neovim-config.git` into `~/.config/nvim`.
 
 After it finishes, restart the shell or run:
 
@@ -113,14 +113,14 @@ Run this manually after changing Stow packages if package installation is not ne
 
 ## Neovim
 
-`neovim` is installed as a CLI tool through `Brewfile`. The actual configuration lives in the separate `git@github.com:philbudden/neovim-config.git` repository.
+`neovim` is installed as a CLI tool through `Brewfile`. The actual configuration lives in the separate `https://github.com/philbudden/neovim-config.git` repository.
 
 During bootstrap, this repo clones that configuration into `~/.config/nvim` when it is missing. If `~/.config/nvim` is already a clone of the same repository, bootstrap updates it with `git pull --ff-only`. If another Git-backed Neovim config already exists, bootstrap leaves it unchanged and reports the different origin. If a non-Git config already exists, bootstrap moves it aside with a timestamped `.backup.YYYYMMDDHHMMSS` suffix before cloning.
 
 To use a different source temporarily:
 
 ```bash
-NVIM_CONFIG_REPO=git@github.com:example/neovim-config.git ./bootstrap.sh
+NVIM_CONFIG_REPO=git@github.com:philbudden/neovim-config.git ./bootstrap.sh
 ```
 
 ## Git And SSH
