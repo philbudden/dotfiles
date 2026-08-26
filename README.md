@@ -90,6 +90,7 @@ The script will not install Homebrew automatically on a host. This is intentiona
 - `fzf`
 - `gh`
 - `jq`
+- `lazygit`
 - `neovim`
 - `ripgrep`
 - `starship`
