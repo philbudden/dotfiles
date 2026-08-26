@@ -1,3 +1,0 @@
-command = /opt/homebrew/opt/bash/bin/bash --login
-font-size = 18
-theme = gruvbox-material-hard-dark
