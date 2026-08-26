@@ -36,8 +36,14 @@ Project tooling should normally live in the relevant repository's devcontainer, 
     ├── git
     │   └── .gitconfig
     ├── shell
+    │   ├── .config
+    │   │   └── shell
+    │   │       ├── env.sh
+    │   │       └── interactive.sh
     │   ├── .bash_profile
     │   ├── .bashrc
+    │   ├── .zprofile
+    │   ├── .zshrc
     │   └── .hushlogin
     ├── starship
     │   └── .config/starship.toml
@@ -64,10 +70,14 @@ The script will:
 5. Link the Stow packages into `$HOME`.
 6. Clone or update `https://github.com/philbudden/neovim-config.git` into `~/.config/nvim`.
 
-After it finishes, restart the shell or run:
+After it finishes, restart the shell or run the entrypoint for the current shell:
 
 ```bash
 source ~/.bashrc
+```
+
+```zsh
+source ~/.zshrc
 ```
 
 ## Bootstrap On A Host
@@ -111,6 +121,17 @@ stow --dir stow --target "$HOME" shell git starship tmux
 ```
 
 Run this manually after changing Stow packages if package installation is not needed.
+
+## Shell Configuration
+
+The shell setup supports both Bash and Zsh without keeping two full configurations in sync.
+
+- `.config/shell/env.sh` contains portable environment and PATH setup.
+- `.config/shell/interactive.sh` is reserved for shared aliases and functions that work unchanged in Bash and Zsh.
+- `.bashrc` and `.zshrc` stay small and contain only shell-specific interactive initialisation, such as Starship, zoxide and fzf.
+- `.bash_profile` and `.zprofile` handle login-shell entrypoints.
+
+Use the default shell that fits the environment: Zsh on macOS, Bash in most Linux devcontainers and remote Linux systems, and whichever is least surprising in WSL2.
 
 ## Neovim
 

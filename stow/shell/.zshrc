@@ -12,13 +12,13 @@ if [ -f "$HOME/.config/shell/interactive.sh" ]; then
 fi
 
 if command -v starship >/dev/null 2>&1; then
-    eval "$(starship init bash)"
+    eval "$(starship init zsh)"
 fi
 
 if command -v zoxide >/dev/null 2>&1; then
-    eval "$(zoxide init bash)"
+    eval "$(zoxide init zsh)"
 fi
 
 if command -v fzf >/dev/null 2>&1; then
-    source <(fzf --bash)
+    source <(fzf --zsh)
 fi
