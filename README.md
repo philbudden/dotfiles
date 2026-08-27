@@ -134,7 +134,7 @@ Use the default shell that fits the environment: Zsh on macOS, Bash in most Linu
 
 `tmux` is intentionally not installed or configured here. It belongs to the host control-plane layer because project sessions live on the host side of the DevPod attach workflow.
 
-GitHub Copilot CLI is intentionally installed here because it is part of the normal development shell inside hosts and devcontainers. Authentication remains outside this bootstrap: log in on the host manually, then let the host control-plane attach commands pass existing GitHub authentication into devcontainer sessions.
+GitHub Copilot CLI is intentionally installed here because it is part of the normal development shell inside hosts and devcontainers. Authentication remains outside this bootstrap: log in on the host manually, then let the host control-plane attach commands pass existing GitHub authentication into devcontainer sessions. On macOS it is installed with the Homebrew `copilot-cli` cask; on Linux, WSL2 and devcontainers it is installed with GitHub's official install script.
 
 CodeRabbit CLI is also installed here because it is part of the terminal-native review workflow. Authentication remains outside this bootstrap. On macOS it is installed with the Homebrew `coderabbit` cask; on Linux, WSL2 and devcontainers it is installed with CodeRabbit's official install script.
 

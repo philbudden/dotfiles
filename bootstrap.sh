@@ -101,6 +101,25 @@ install_neovim_config() {
     git clone "$nvim_config_repo" "$nvim_config_dir"
 }
 
+install_copilot_cli_for_linux() {
+    if [ "$(uname -s)" != "Linux" ]; then
+        return 0
+    fi
+
+    if command -v copilot >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if ! command -v curl >/dev/null 2>&1; then
+        echo "curl is required to install GitHub Copilot CLI on Linux."
+        echo "Install curl with the system package manager, then rerun ./bootstrap.sh."
+        exit 1
+    fi
+
+    echo "Installing GitHub Copilot CLI..."
+    curl -fsSL https://gh.io/copilot-install | bash
+}
+
 install_coderabbit_cli_for_linux() {
     if [ "$(uname -s)" != "Linux" ]; then
         return 0
@@ -117,7 +136,7 @@ install_coderabbit_cli_for_linux() {
     fi
 
     echo "Installing CodeRabbit CLI..."
-    curl -fsSL https://cli.coderabbit.ai/install.sh | sh
+    curl -fsSL https://cli.coderabbit.ai/install.sh | CI=1 sh
 }
 
 ensure_coderabbit_alias() {
@@ -184,6 +203,7 @@ ensure_c_compiler
 echo "Installing CLI tools from Brewfile..."
 brew bundle --file "$repo_dir/Brewfile"
 
+install_copilot_cli_for_linux
 install_coderabbit_cli_for_linux
 
 backup_stow_conflicts

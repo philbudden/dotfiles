@@ -13,5 +13,5 @@ brew "unzip"
 brew "zip"
 brew "zoxide"
 
-cask "copilot-cli"
+cask "copilot-cli" if OS.mac?
 cask "coderabbit" if OS.mac?
