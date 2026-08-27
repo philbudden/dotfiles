@@ -127,7 +127,6 @@ The shell setup supports both Bash and Zsh without keeping two full configuratio
 
 - `.config/shell/env.sh` contains portable environment and PATH setup.
 - `.config/shell/interactive.sh` is reserved for shared aliases and functions that work unchanged in Bash and Zsh.
-- `.local/bin/cr` provides a portable short alias for `coderabbit`, including macOS installs where the Homebrew cask exposes only the long command.
 - `.bashrc` and `.zshrc` stay small and contain only shell-specific interactive initialisation, such as Starship, zoxide and fzf.
 - `.bash_profile` and `.zprofile` handle login-shell entrypoints.
 
@@ -138,6 +137,8 @@ Use the default shell that fits the environment: Zsh on macOS, Bash in most Linu
 GitHub Copilot CLI is intentionally installed here because it is part of the normal development shell inside hosts and devcontainers. Authentication remains outside this bootstrap: log in on the host manually, then let the host control-plane attach commands pass existing GitHub authentication into devcontainer sessions.
 
 CodeRabbit CLI is also installed here because it is part of the terminal-native review workflow. Authentication remains outside this bootstrap. On macOS it is installed with the Homebrew `coderabbit` cask; on Linux, WSL2 and devcontainers it is installed with CodeRabbit's official install script.
+
+Bootstrap creates a `~/.local/bin/cr` symlink to `coderabbit` only when the short command is missing. The symlink is created by bootstrap rather than Stow because CodeRabbit's Linux installer also creates `~/.local/bin/cr`.
 
 On Linux and WSL2, Neovim Treesitter parser installation needs a C compiler. Bootstrap installs Ubuntu/Debian `build-essential` through `apt` when `cc` is missing, because Treesitter needs a normal system compiler rather than a Homebrew GCC package.
 

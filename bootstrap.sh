@@ -120,6 +120,26 @@ install_coderabbit_cli_for_linux() {
     curl -fsSL https://cli.coderabbit.ai/install.sh | sh
 }
 
+ensure_coderabbit_alias() {
+    if command -v cr >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if ! command -v coderabbit >/dev/null 2>&1; then
+        return 0
+    fi
+
+    alias_dir="$HOME/.local/bin"
+    alias_path="$alias_dir/cr"
+    mkdir -p "$alias_dir"
+
+    if [ -L "$alias_path" ] || [ ! -e "$alias_path" ]; then
+        ln -sfn "$(command -v coderabbit)" "$alias_path"
+    else
+        echo "Skipping ${alias_path}; a non-symlink file already exists."
+    fi
+}
+
 backup_stow_conflicts() {
     backup_dir="$HOME/.dotfiles-backup/$(date +%Y%m%d%H%M%S)"
     made_backup_dir=0
@@ -170,6 +190,8 @@ backup_stow_conflicts
 
 echo "Linking dotfiles with GNU Stow..."
 stow --dir "$repo_dir/stow" --target "$HOME" "${stow_packages[@]}"
+
+ensure_coderabbit_alias
 
 install_neovim_config
 
