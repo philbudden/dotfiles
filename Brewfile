@@ -2,6 +2,7 @@ brew "bat"
 brew "fd"
 brew "fzf"
 brew "gh"
+brew "gcc" if OS.linux?
 brew "jq"
 brew "lazygit"
 brew "neovim"

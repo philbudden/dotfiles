@@ -23,3 +23,12 @@ if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
 elif [ -x /opt/homebrew/bin/brew ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+if ! command -v cc >/dev/null 2>&1 && [ -z "${CC:-}" ]; then
+    for gcc_path in /home/linuxbrew/.linuxbrew/bin/gcc-[0-9]* /opt/homebrew/bin/gcc-[0-9]*; do
+        if [ -x "$gcc_path" ]; then
+            export CC="$gcc_path"
+            break
+        fi
+    done
+fi
