@@ -94,6 +94,7 @@ The script will not install Homebrew automatically on a host. This is intentiona
 `Brewfile` contains portable CLI tools only:
 
 - `bat`
+- `copilot-cli`
 - `fd`
 - `fzf`
 - `gh`
@@ -131,6 +132,8 @@ The shell setup supports both Bash and Zsh without keeping two full configuratio
 Use the default shell that fits the environment: Zsh on macOS, Bash in most Linux devcontainers and remote Linux systems, and whichever is least surprising in WSL2.
 
 `tmux` is intentionally not installed or configured here. It belongs to the host control-plane layer because project sessions live on the host side of the DevPod attach workflow.
+
+GitHub Copilot CLI is intentionally installed here because it is part of the normal development shell inside hosts and devcontainers. Authentication remains outside this bootstrap: log in on the host manually, then let the host control-plane attach commands pass existing GitHub authentication into devcontainer sessions.
 
 ## Neovim
 

@@ -12,3 +12,9 @@ brew "tree-sitter-cli"
 brew "unzip"
 brew "zip"
 brew "zoxide"
+
+if OS.mac?
+  cask "copilot-cli"
+else
+  brew "copilot-cli"
+end
