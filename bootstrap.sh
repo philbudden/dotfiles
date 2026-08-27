@@ -101,6 +101,25 @@ install_neovim_config() {
     git clone "$nvim_config_repo" "$nvim_config_dir"
 }
 
+install_coderabbit_cli_for_linux() {
+    if [ "$(uname -s)" != "Linux" ]; then
+        return 0
+    fi
+
+    if command -v cr >/dev/null 2>&1 || command -v coderabbit >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if ! command -v curl >/dev/null 2>&1; then
+        echo "curl is required to install CodeRabbit CLI on Linux."
+        echo "Install curl with the system package manager, then rerun ./bootstrap.sh."
+        exit 1
+    fi
+
+    echo "Installing CodeRabbit CLI..."
+    curl -fsSL https://cli.coderabbit.ai/install.sh | sh
+}
+
 backup_stow_conflicts() {
     backup_dir="$HOME/.dotfiles-backup/$(date +%Y%m%d%H%M%S)"
     made_backup_dir=0
@@ -144,6 +163,8 @@ ensure_c_compiler
 
 echo "Installing CLI tools from Brewfile..."
 brew bundle --file "$repo_dir/Brewfile"
+
+install_coderabbit_cli_for_linux
 
 backup_stow_conflicts
 
