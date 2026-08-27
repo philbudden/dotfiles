@@ -97,7 +97,6 @@ The script will not install Homebrew automatically on a host. This is intentiona
 - `copilot-cli`
 - `fd`
 - `fzf`
-- `gcc` on Linux, so Neovim Treesitter parsers can compile when the host or container lacks `cc`
 - `gh`
 - `jq`
 - `lazygit`
@@ -136,7 +135,7 @@ Use the default shell that fits the environment: Zsh on macOS, Bash in most Linu
 
 GitHub Copilot CLI is intentionally installed here because it is part of the normal development shell inside hosts and devcontainers. Authentication remains outside this bootstrap: log in on the host manually, then let the host control-plane attach commands pass existing GitHub authentication into devcontainer sessions.
 
-On Linux and WSL2, Neovim Treesitter parser installation needs a C compiler. The Brewfile installs Homebrew `gcc` on Linux, and `.config/shell/env.sh` sets `CC` to that compiler only when no `cc` command is already available.
+On Linux and WSL2, Neovim Treesitter parser installation needs a C compiler. Bootstrap installs Ubuntu/Debian `build-essential` through `apt` when `cc` is missing, because Treesitter needs a normal system compiler rather than a Homebrew GCC package.
 
 ## Neovim
 

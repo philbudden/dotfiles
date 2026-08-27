@@ -28,6 +28,41 @@ load_brew() {
     return 1
 }
 
+ensure_c_compiler() {
+    if command -v cc >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if [ "$(uname -s)" != "Linux" ]; then
+        return 0
+    fi
+
+    echo "No C compiler found. Installing build-essential for Neovim Treesitter parser builds..."
+
+    if command -v apt-get >/dev/null 2>&1; then
+        if [ "$(id -u)" -eq 0 ]; then
+            apt-get update
+            apt-get install -y build-essential
+        elif command -v sudo >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y build-essential
+        else
+            echo "sudo is not available. Install build-essential manually, then rerun ./bootstrap.sh:"
+            echo "  apt-get update && apt-get install -y build-essential"
+            exit 1
+        fi
+    else
+        echo "No supported system package manager found for installing a C compiler."
+        echo "Install a system C compiler so Neovim Treesitter can build parsers, then rerun ./bootstrap.sh."
+        exit 1
+    fi
+
+    if ! command -v cc >/dev/null 2>&1; then
+        echo "build-essential installation completed, but cc is still not available on PATH."
+        exit 1
+    fi
+}
+
 install_homebrew_for_container() {
     if ! command -v bash >/dev/null 2>&1 || ! command -v curl >/dev/null 2>&1; then
         echo "Homebrew is not installed, and this environment is missing bash or curl."
@@ -104,6 +139,8 @@ if ! load_brew; then
         exit 1
     fi
 fi
+
+ensure_c_compiler
 
 echo "Installing CLI tools from Brewfile..."
 brew bundle --file "$repo_dir/Brewfile"
